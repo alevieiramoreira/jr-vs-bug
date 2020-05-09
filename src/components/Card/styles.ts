@@ -2,10 +2,15 @@ import styled, { css } from 'styled-components';
 
 interface ContainerProps {
   type: 'player' | 'bug';
+  width: number;
+  height: number;
 }
 
 export const Container = styled.div<ContainerProps>`
-  /* como receber dinamicos*/
+  border: 3px solid #000;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+
   ${(props) =>
     props.type === 'bug' &&
     css`
@@ -16,11 +21,12 @@ export const Container = styled.div<ContainerProps>`
     css`
       background-color: #2dd5ed;
     `}
-  border: 3px solid #000;
-  width: 150px;
-  height: 200px;
 
   span {
     color: #fff;
+  }
+
+  & + div {
+    margin-left: 5px;
   }
 `;
