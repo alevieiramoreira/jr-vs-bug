@@ -1,9 +1,9 @@
 import React, { ReactElement } from 'react';
 
-// import { Container } from './styles';
+import { Container } from './styles';
 
 function Login(): ReactElement {
-  return <div>login</div>;
+  return <Container>login</Container>;
 }
 
 export default Login;
