@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Container, Deck, Board, Table, SelectedCard, Players } from './styles';
 
-import { PlayerState } from '../../redux/types';
+import { PlayerState, CardState } from '../../redux/types';
 import api from '../../services/api';
 
-import Card from '../../components/Deck/Card';
+import Card, { CardProps } from '../../components/Deck/Card';
 import PlayerStatus from '../../components/PlayerStatus';
 
 interface StateProps {
@@ -20,9 +20,17 @@ function Game(): ReactElement {
   const decks = useSelector((state: StateProps) =>
     state.game.map((player) => player.deck),
   );
-  console.log(decks);
 
   const dispatch: Dispatch = useDispatch();
+
+  const handleCardSelect = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      console.log('EVENTO DISPARADO');
+      // dispatch({ type: event.currentTarget.id });
+    },
+    [],
+  );
+  console.log(decks);
 
   return (
     <Container>
@@ -43,12 +51,16 @@ function Game(): ReactElement {
           {decks[0].map((card) => (
             <Card
               id={card.id}
+              key={card.id}
               description={card.description}
               manaUsagePoints={card.manaUsagePoints}
               name={card.name}
-              type="bug"
+              owner="bug"
               width={120}
               height={130}
+              onClick={() => {
+                console.log('evento card bug');
+              }}
             />
           ))}
         </Deck>
@@ -60,12 +72,16 @@ function Game(): ReactElement {
           {decks[1].map((card) => (
             <Card
               id={card.id}
+              key={card.id}
               description={card.description}
               manaUsagePoints={card.manaUsagePoints}
               name={card.name}
-              type="dev"
+              owner="dev"
               width={120}
               height={130}
+              onClick={() => {
+                console.log('evento card dev');
+              }}
             />
           ))}
         </Deck>

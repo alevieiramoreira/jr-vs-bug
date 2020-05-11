@@ -74,7 +74,7 @@ const gameState: State = {
       imgUrl: devImg,
       deck: [
         {
-          id: '1',
+          id: 'COFFEECARD',
           name: 'carta1',
           description: 'descricao da carta 1',
           manaUsagePoints: 5,
@@ -135,7 +135,7 @@ const gameState: State = {
 export default function game(state = gameState.players, action: Action) {
   switch (action.type) {
     case 'COFFEECARD':
-      return state[0].mana + 5;
+      return console.log('FOI');
     default:
       return state;
   }
