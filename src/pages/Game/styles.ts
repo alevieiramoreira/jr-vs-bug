@@ -1,17 +1,25 @@
 import styled, { css } from 'styled-components';
 
 interface DeckProps {
-  type: 'player' | 'bug';
-}
-
-interface StatusBarProps {
-  type: 'health' | 'mana';
+  type: 'dev' | 'bug';
 }
 
 export const Container = styled.div`
   display: flex;
   padding: 0 15px;
   height: 100vh;
+`;
+
+export const Players = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
+
+  div + div {
+    margin-top: 35px;
+  }
 `;
 
 export const Board = styled.section`
@@ -27,7 +35,7 @@ export const Deck = styled.div<DeckProps>`
   width: 100%;
 
   ${(props) =>
-    props.type === 'player' &&
+    props.type === 'dev' &&
     css`
       align-self: flex-end;
     `}
@@ -38,23 +46,7 @@ export const Deck = styled.div<DeckProps>`
     `}
 `;
 
-export const Status = styled.section`
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 20px;
-
-  img {
-    width: 100px;
-    border-radius: 100%;
-    border: 3px solid #cb0c59;
-  }
-
-  div + div {
-    margin-top: 35px;
-  }
-`;
+export const Status = styled.section``;
 
 export const Table = styled.section`
   margin: 10px;
@@ -74,33 +66,5 @@ export const SelectedCard = styled.div`
 
   div {
     margin: 5px;
-  }
-`;
-
-export const StatusBar = styled.span<StatusBarProps>`
-  display: block;
-  width: 120px;
-  height: 20px;
-  border: solid 3px #000;
-  margin-top: 10px;
-  ${(props) =>
-    props.type === 'health' &&
-    css`
-      background-color: #58cf55;
-    `};
-  ${(props) =>
-    props.type === 'mana' &&
-    css`
-      background-color: #55a3cf;
-    `};
-
-  img {
-    display: flex;
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    margin-top: -10px;
-    margin-left: -15px;
-    border: none;
   }
 `;

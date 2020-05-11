@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface ContainerProps {
-  type: 'player' | 'bug';
+  type: 'dev' | 'bug';
   width: number;
   height: number;
 }
@@ -17,7 +17,7 @@ export const Container = styled.div<ContainerProps>`
       background-color: #cb0c59;
     `}
   ${(props) =>
-    props.type === 'player' &&
+    props.type === 'dev' &&
     css`
       background-color: #2dd5ed;
     `}

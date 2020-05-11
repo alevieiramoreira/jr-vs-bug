@@ -1,79 +1,78 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useCallback, useState } from 'react';
+import { Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  Container,
-  Deck,
-  Status,
-  Board,
-  Table,
-  SelectedCard,
-  StatusBar,
-} from './styles';
+import { Container, Deck, Board, Table, SelectedCard, Players } from './styles';
 
-import bugImg from '../../assets/bug.png';
-import playerImg from '../../assets/player.png';
-import heartImg from '../../assets/heart.png';
-import manaImg from '../../assets/mana.png';
+import { PlayerState } from '../../redux/types';
+import api from '../../services/api';
 
-import Card from '../../components/Card';
+import Card from '../../components/Deck/Card';
+import PlayerStatus from '../../components/PlayerStatus';
+
+interface StateProps {
+  game: PlayerState[];
+}
 
 function Game(): ReactElement {
+  const players = useSelector((state: StateProps) => state.game);
+
+  const decks = useSelector((state: StateProps) =>
+    state.game.map((player) => player.deck),
+  );
+  console.log(decks);
+
+  const dispatch: Dispatch = useDispatch();
+
   return (
     <Container>
-      <Status>
-        <div>
-          <img src={bugImg} alt="avatar do bug" />
-          <StatusBar type="health">
-            <img src={heartImg} alt="coração em pixel art" />
-          </StatusBar>
-          <StatusBar type="mana">
-            <img src={manaImg} alt="pote de mana em pixel art" />
-          </StatusBar>
-        </div>
-        <div>
-          <img src={playerImg} alt="avatar do player" />
-          <StatusBar type="health">
-            <img src={heartImg} alt="coração em pixel art" />
-          </StatusBar>
-          <StatusBar type="mana">
-            <img src={manaImg} alt="pote de mana em pixel art" />
-          </StatusBar>
-        </div>
-      </Status>
-
+      <Players>
+        {players.map((player) => (
+          <PlayerStatus
+            imgUrl={player.imgUrl}
+            key={player.playerName}
+            deck={player.deck}
+            mana={player.mana}
+            health={player.health}
+            playerName={player.playerName}
+          />
+        ))}
+      </Players>
       <Board>
         <Deck type="bug">
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
-          <Card type="bug" width={120} height={130} />
+          {decks[0].map((card) => (
+            <Card
+              id={card.id}
+              description={card.description}
+              manaUsagePoints={card.manaUsagePoints}
+              name={card.name}
+              type="bug"
+              width={120}
+              height={130}
+            />
+          ))}
         </Deck>
-
         <Table>
-          <Card type="player" width={90} height={120} />
-          <Card type="bug" width={90} height={120} />
+          {/* <Card type="dev" width={90} height={120} />
+          <Card type="bug" width={90} height={120} /> */}
         </Table>
-
-        <Deck type="player">
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
-          <Card type="player" width={120} height={140} />
+        <Deck type="dev">
+          {decks[1].map((card) => (
+            <Card
+              id={card.id}
+              description={card.description}
+              manaUsagePoints={card.manaUsagePoints}
+              name={card.name}
+              type="dev"
+              width={120}
+              height={130}
+            />
+          ))}
         </Deck>
       </Board>
 
       <SelectedCard>
-        <Card type="player" width={120} height={180} />
+        {/* <Card type="dev" width={120} height={180} /> */}
         <span>descricao da carta</span>
       </SelectedCard>
     </Container>
