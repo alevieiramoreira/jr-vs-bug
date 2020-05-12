@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { Container } from './styles';
+import { AudioPlayerContainer } from './styles';
 
 const musicTheme = require('../../assets/music/music.mp4');
 
@@ -10,11 +10,11 @@ interface AudioPlayerProps extends HTMLAudioElement {
 
 function AudioPlayer(): ReactElement {
   return (
-    <Container>
+    <AudioPlayerContainer>
       <audio src={musicTheme} autoPlay loop controls>
         <track kind="captions" />
       </audio>
-    </Container>
+    </AudioPlayerContainer>
   );
 }
 

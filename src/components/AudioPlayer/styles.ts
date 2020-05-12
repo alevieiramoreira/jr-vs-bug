@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const AudioPlayerContainer = styled.div`
   audio {
     display: flex;
     justify-self: flex-start;

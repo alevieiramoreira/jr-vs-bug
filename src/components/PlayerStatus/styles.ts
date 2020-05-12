@@ -6,7 +6,7 @@ interface StatusBarProps {
   mana?: number;
 }
 
-export const Container = styled.div`
+export const PlayerStatusContainer = styled.div`
   img {
     width: 100px;
     border-radius: 100%;
@@ -22,7 +22,7 @@ export const StatusBar = styled.span<StatusBarProps>`
   margin-top: 10px;
 
   div {
-    width: calc(6 * ${(props) => props.health || props.mana}px);
+    max-width: calc(6 * ${(props) => props.health || props.mana}px);
     height: 14px;
     ${(props) =>
       props.type === 'health' &&
