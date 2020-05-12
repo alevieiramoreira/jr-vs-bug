@@ -1,6 +1,8 @@
 import React, { ReactElement } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
+import store from './redux/store';
 import GlobalStyle from './styles/global';
 
 import SignUp from './pages/SignUp';
@@ -10,7 +12,7 @@ import Profile from './pages/Profile';
 
 function App(): ReactElement {
   return (
-    <div className="App">
+    <Provider store={store}>
       <BrowserRouter>
         <Switch>
           <Route path="/login" component={Login} />
@@ -20,7 +22,7 @@ function App(): ReactElement {
         </Switch>
       </BrowserRouter>
       <GlobalStyle />
-    </div>
+    </Provider>
   );
 }
 
