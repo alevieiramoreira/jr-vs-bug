@@ -1,13 +1,19 @@
 import React, { ReactElement, useEffect, useCallback, useState } from 'react';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
+import UIfx from 'uifx';
 
 import { Container, Deck, Board, Table, SelectedCard, Players } from './styles';
 
-import { PlayerState, CardState, State } from '../../redux/types';
+import { CardState, State } from '../../redux/types';
 
-import Card, { CardProps } from '../../components/Card';
+import Card from '../../components/Card';
 import PlayerStatus from '../../components/PlayerStatus';
+import AudioPlayer from '../../components/AudioPlayer';
+
+const beepMp3 = require('../../assets/music/beep.mp3');
+
+const beep = new UIfx(beepMp3);
 
 interface StateProps {
   game: State;
@@ -15,6 +21,7 @@ interface StateProps {
 
 function Game(): ReactElement {
   const [cardSelected, setCardSelected] = useState<CardState>();
+  const [cardsOnTable, setCardsOnTable] = useState<CardState[]>([]);
   const players = useSelector((state: StateProps) => state.game.players);
 
   const decks = players.map((player) => player.deck);
@@ -23,9 +30,8 @@ function Game(): ReactElement {
 
   const handleCardSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      const newSelectedCard = decks[1].find(
-        (card) => card.id === event.currentTarget.id,
-      );
+      beep.play();
+      const newSelectedCard = decks[1].find((card) => card.id === event.currentTarget.id);
 
       setCardSelected(newSelectedCard);
     },
@@ -33,15 +39,20 @@ function Game(): ReactElement {
   );
 
   const handleCurrentSelectedCard = useCallback(
-    (type: string, playerId: string) => {
-      dispatch({ type, id: playerId });
+    (newCardSelected: CardState) => {
+      beep.play();
+      dispatch({ type: newCardSelected.id, id: newCardSelected.playerId });
+
+      setCardsOnTable([...cardsOnTable, newCardSelected]);
     },
-    [dispatch],
+    [dispatch, cardsOnTable],
   );
 
   return (
     <Container>
       <Players>
+        <AudioPlayer />
+
         {players.map((player) => (
           <PlayerStatus
             id={player.id}
@@ -71,8 +82,9 @@ function Game(): ReactElement {
           ))}
         </Deck>
         <Table>
-          {/* <Card type="dev" width={90} height={120} />
-          <Card type="bug" width={90} height={120} /> */}
+          {cardsOnTable.map((card) => (
+            <Card {...card} owner="dev" width={90} height={110} />
+          ))}
         </Table>
         <Deck type="dev">
           {decks[1].map((card) => (
@@ -94,25 +106,9 @@ function Game(): ReactElement {
 
       {cardSelected && (
         <SelectedCard>
-          <Card
-            id={cardSelected.id}
-            playerId={cardSelected.id}
-            key={cardSelected.id}
-            description={cardSelected.description}
-            manaUsagePoints={cardSelected.manaUsagePoints}
-            name={cardSelected.name}
-            owner="dev"
-            width={130}
-            height={170}
-            onClick={handleCardSelect}
-          />
+          <Card {...cardSelected} owner="dev" width={130} height={170} onClick={handleCardSelect} />
           <span>{cardSelected.description}</span>
-          <button
-            type="button"
-            onClick={() =>
-              handleCurrentSelectedCard(cardSelected.id, cardSelected.playerId)
-            }
-          >
+          <button type="button" onClick={() => handleCurrentSelectedCard(cardSelected)}>
             usar carta
           </button>
         </SelectedCard>

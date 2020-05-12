@@ -157,23 +157,17 @@ export default function game(state = gameState, action: Action) {
   switch (action.type) {
     case 'COFFEECARD':
       newState = state.players.map((player) =>
-        player.id === action.id
-          ? { ...player, mana: player.mana += 5 }
-          : player,
+        player.id === action.id ? { ...player, mana: player.mana += 5 } : player,
       );
       return { ...state, players: newState };
     case 'CHANGEEXPJRPOWER':
       newState = state.players.map((player) =>
-        player.id !== action.id
-          ? { ...player, health: player.health -= 5 }
-          : player,
+        player.id !== action.id ? { ...player, health: player.health -= 5 } : player,
       );
       return { ...state, players: newState };
     case 'ACTIVEANTIVIRUS':
       newState = state.players.map((player) =>
-        player.id === action.id
-          ? { ...player, mana: player.mana -= 10 }
-          : player,
+        player.id === action.id ? { ...player, mana: player.mana -= 2 } : player,
       );
       return { ...state, players: newState };
     default:

@@ -56,6 +56,12 @@ export const Table = styled.section`
   width: 100%;
   height: 350px;
   background-color: #625b64;
+
+  div {
+    button {
+      display: none;
+    }
+  }
 `;
 
 export const SelectedCard = styled.div`

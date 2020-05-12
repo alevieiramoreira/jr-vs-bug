@@ -31,7 +31,9 @@
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "import/prefer-default-export": "off",
     "no-return-assign": "off",
+    "@typescript-eslint/no-var-requires": "off",
     "no-param-reassign": "off",
+    "react/jsx-props-no-spreading": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
