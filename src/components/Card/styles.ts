@@ -6,7 +6,7 @@ interface ContainerProps {
   height: number;
 }
 
-export const Container = styled.div<ContainerProps>`
+export const CardContainer = styled.div<ContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;

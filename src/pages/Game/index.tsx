@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useCallback, useState } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { Dispatch } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import UIfx from 'uifx';
@@ -22,8 +22,8 @@ interface StateProps {
 function Game(): ReactElement {
   const [cardSelected, setCardSelected] = useState<CardState>();
   const [cardsOnTable, setCardsOnTable] = useState<CardState[]>([]);
-  const players = useSelector((state: StateProps) => state.game.players);
 
+  const players = useSelector((state: StateProps) => state.game.players);
   const decks = players.map((player) => player.deck);
 
   const dispatch: Dispatch = useDispatch();
