@@ -16,11 +16,16 @@ function PlayerStatus({
   return (
     <Container>
       <img src={imgUrl} alt="avatar do bug" />
-      <StatusBar type="health">
-        <img src={heartImg} alt="coração em pixel art" />
+      <StatusBar type="health" health={health}>
+        <div>
+          <img src={heartImg} alt="coração em pixel art" />
+        </div>
       </StatusBar>
-      <StatusBar type="mana">
-        <img src={manaImg} alt="pote de mana em pixel art" />
+
+      <StatusBar type="mana" mana={mana}>
+        <div>
+          <img src={manaImg} alt="pote de mana em pixel art" />
+        </div>
       </StatusBar>
     </Container>
   );

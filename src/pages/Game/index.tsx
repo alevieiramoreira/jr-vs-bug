@@ -4,41 +4,49 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Container, Deck, Board, Table, SelectedCard, Players } from './styles';
 
-import { PlayerState, CardState } from '../../redux/types';
-import api from '../../services/api';
+import { PlayerState, CardState, State } from '../../redux/types';
 
-import Card, { CardProps } from '../../components/Deck/Card';
+import Card, { CardProps } from '../../components/Card';
 import PlayerStatus from '../../components/PlayerStatus';
 
 interface StateProps {
-  game: PlayerState[];
+  game: State;
 }
 
 function Game(): ReactElement {
-  const players = useSelector((state: StateProps) => state.game);
+  const [cardSelected, setCardSelected] = useState<CardState>();
+  const players = useSelector((state: StateProps) => state.game.players);
 
-  const decks = useSelector((state: StateProps) =>
-    state.game.map((player) => player.deck),
-  );
+  const decks = players.map((player) => player.deck);
 
   const dispatch: Dispatch = useDispatch();
 
   const handleCardSelect = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      console.log('EVENTO DISPARADO');
-      // dispatch({ type: event.currentTarget.id });
+    (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      const newSelectedCard = decks[1].find(
+        (card) => card.id === event.currentTarget.id,
+      );
+
+      setCardSelected(newSelectedCard);
     },
-    [],
+    [decks],
   );
-  console.log(decks);
+
+  const handleCurrentSelectedCard = useCallback(
+    (type: string, playerId: string) => {
+      dispatch({ type, id: playerId });
+    },
+    [dispatch],
+  );
 
   return (
     <Container>
       <Players>
         {players.map((player) => (
           <PlayerStatus
+            id={player.id}
+            key={player.id}
             imgUrl={player.imgUrl}
-            key={player.playerName}
             deck={player.deck}
             mana={player.mana}
             health={player.health}
@@ -51,6 +59,7 @@ function Game(): ReactElement {
           {decks[0].map((card) => (
             <Card
               id={card.id}
+              playerId={card.playerId}
               key={card.id}
               description={card.description}
               manaUsagePoints={card.manaUsagePoints}
@@ -58,9 +67,6 @@ function Game(): ReactElement {
               owner="bug"
               width={120}
               height={130}
-              onClick={() => {
-                console.log('evento card bug');
-              }}
             />
           ))}
         </Deck>
@@ -72,6 +78,7 @@ function Game(): ReactElement {
           {decks[1].map((card) => (
             <Card
               id={card.id}
+              playerId={card.playerId}
               key={card.id}
               description={card.description}
               manaUsagePoints={card.manaUsagePoints}
@@ -79,18 +86,37 @@ function Game(): ReactElement {
               owner="dev"
               width={120}
               height={130}
-              onClick={() => {
-                console.log('evento card dev');
-              }}
+              onClick={handleCardSelect}
             />
           ))}
         </Deck>
       </Board>
 
-      <SelectedCard>
-        {/* <Card type="dev" width={120} height={180} /> */}
-        <span>descricao da carta</span>
-      </SelectedCard>
+      {cardSelected && (
+        <SelectedCard>
+          <Card
+            id={cardSelected.id}
+            playerId={cardSelected.id}
+            key={cardSelected.id}
+            description={cardSelected.description}
+            manaUsagePoints={cardSelected.manaUsagePoints}
+            name={cardSelected.name}
+            owner="dev"
+            width={130}
+            height={170}
+            onClick={handleCardSelect}
+          />
+          <span>{cardSelected.description}</span>
+          <button
+            type="button"
+            onClick={() =>
+              handleCurrentSelectedCard(cardSelected.id, cardSelected.playerId)
+            }
+          >
+            usar carta
+          </button>
+        </SelectedCard>
+      )}
     </Container>
   );
 }

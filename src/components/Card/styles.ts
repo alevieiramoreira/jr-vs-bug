@@ -8,7 +8,8 @@ interface ContainerProps {
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   border: 3px solid #000;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
@@ -21,6 +22,7 @@ export const Container = styled.div<ContainerProps>`
   ${(props) =>
     props.owner === 'dev' &&
     css`
+      color: #000;
       background-color: #2dd5ed;
     `}
 
@@ -35,7 +37,7 @@ export const Container = styled.div<ContainerProps>`
   button {
     display: flex;
     visibility: hidden;
-    margin: 0 auto;
+    position: absolute;
     padding: 8px 3px;
     background-color: #fac60e;
   }

@@ -1,66 +1,76 @@
 import bugImg from '../../assets/bug.png';
 import devImg from '../../assets/player.png';
 
-import { Action, State } from '../types';
+import { Action, State, PlayerState } from '../types';
 
 const gameState: State = {
   players: [
     {
+      id: '0',
       playerName: 'bug',
       mana: 20,
       health: 20,
       imgUrl: bugImg,
       deck: [
         {
-          id: '1',
+          id: 'ICANT',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 1',
           manaUsagePoints: 5,
         },
         {
-          id: '2',
+          id: 'BADWRITTENCODE',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 2',
           manaUsagePoints: 5,
         },
         {
-          id: '3',
+          id: 'LOSETHEDAILY',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 3',
           manaUsagePoints: 5,
         },
         {
-          id: '4',
+          id: 'WRONGENDPOINT',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 4',
           manaUsagePoints: 5,
         },
         {
-          id: '5',
+          id: 'LOOSINGCONTACT',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 5',
           manaUsagePoints: 5,
         },
         {
-          id: '6',
+          id: 'BADTIMEMANAGEMENT',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 6',
           manaUsagePoints: 5,
         },
         {
-          id: '7',
+          id: 'GITCONFLICT',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 7',
           manaUsagePoints: 5,
         },
         {
-          id: '8',
+          id: 'PANDEMIC',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 8',
           manaUsagePoints: 5,
         },
         {
-          id: '9',
+          id: 'NOTESTS',
+          playerId: '0',
           name: 'carta1',
           description: 'descricao da carta 9',
           manaUsagePoints: 5,
@@ -68,6 +78,7 @@ const gameState: State = {
       ],
     },
     {
+      id: '1',
       playerName: 'player',
       mana: 20,
       health: 20,
@@ -75,54 +86,63 @@ const gameState: State = {
       deck: [
         {
           id: 'COFFEECARD',
-          name: 'carta1',
-          description: 'descricao da carta 1',
+          playerId: '1',
+          name: 'ganhar mana',
+          description: 'cartinha q ganha mana',
           manaUsagePoints: 5,
         },
         {
-          id: '2',
-          name: 'carta1',
-          description: 'descricao da carta 2',
+          id: 'CHANGEEXPJRPOWER',
+          playerId: '1',
+          name: 'atacar bug',
+          description: 'cartinha q causa dano no bug',
           manaUsagePoints: 5,
         },
         {
-          id: '3',
-          name: 'carta1',
-          description: 'descricao da carta 3',
+          id: 'ACTIVEANTIVIRUS',
+          playerId: '1',
+          name: 'gasta mana',
+          description: 'cartinha q gasta mana',
           manaUsagePoints: 5,
         },
         {
-          id: '4',
+          id: 'TECHLEADPOWER',
+          playerId: '1',
           name: 'carta1',
           description: 'descricao da carta 4',
           manaUsagePoints: 5,
         },
         {
-          id: '5',
+          id: 'FRAMEWORK',
+          playerId: '1',
           name: 'carta1',
           description: 'descricao da carta 5',
           manaUsagePoints: 5,
         },
         {
-          id: '6',
+          id: 'DEBUG',
+          playerId: '1',
           name: 'carta1',
           description: 'descricao da carta 6',
           manaUsagePoints: 5,
         },
         {
-          id: '7',
+          id: 'STACKTRACE',
+          playerId: '1',
           name: 'carta1',
           description: 'descricao da carta 7',
           manaUsagePoints: 5,
         },
         {
-          id: '8',
+          id: 'COFFEEBREAKZUP',
+          playerId: '1',
           name: 'carta1',
           description: 'descricao da carta 8',
           manaUsagePoints: 5,
         },
         {
-          id: '9',
+          id: 'STACKOVERFLOW',
+          playerId: '1',
           name: 'carta1',
           description: 'descricao da carta 9',
           manaUsagePoints: 5,
@@ -132,10 +152,30 @@ const gameState: State = {
   ],
 };
 
-export default function game(state = gameState.players, action: Action) {
+export default function game(state = gameState, action: Action) {
+  let newState = [];
   switch (action.type) {
     case 'COFFEECARD':
-      return console.log('FOI');
+      newState = state.players.map((player) =>
+        player.id === action.id
+          ? { ...player, mana: player.mana += 5 }
+          : player,
+      );
+      return { ...state, players: newState };
+    case 'CHANGEEXPJRPOWER':
+      newState = state.players.map((player) =>
+        player.id !== action.id
+          ? { ...player, health: player.health -= 5 }
+          : player,
+      );
+      return { ...state, players: newState };
+    case 'ACTIVEANTIVIRUS':
+      newState = state.players.map((player) =>
+        player.id === action.id
+          ? { ...player, mana: player.mana -= 10 }
+          : player,
+      );
+      return { ...state, players: newState };
     default:
       return state;
   }

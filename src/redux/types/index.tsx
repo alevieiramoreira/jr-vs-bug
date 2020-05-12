@@ -8,6 +8,7 @@ export interface State {
 }
 
 export interface PlayerState {
+  id: string;
   playerName: string;
   mana: number;
   health: number;
@@ -17,7 +18,8 @@ export interface PlayerState {
 
 export interface CardState {
   id: string;
+  playerId: string;
   name: string;
-  description: string;
+  description?: string;
   manaUsagePoints: number;
 }

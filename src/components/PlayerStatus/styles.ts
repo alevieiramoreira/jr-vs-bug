@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 
 interface StatusBarProps {
   type: 'health' | 'mana';
+  health?: number;
+  mana?: number;
 }
 
 export const Container = styled.div`
@@ -14,20 +16,25 @@ export const Container = styled.div`
 
 export const StatusBar = styled.span<StatusBarProps>`
   display: block;
-  width: 120px;
+  width: 126px;
   height: 20px;
   border: solid 3px #000;
   margin-top: 10px;
-  ${(props) =>
-    props.type === 'health' &&
-    css`
-      background-color: #58cf55;
-    `};
-  ${(props) =>
-    props.type === 'mana' &&
-    css`
-      background-color: #55a3cf;
-    `};
+
+  div {
+    width: calc(6 * ${(props) => props.health || props.mana}px);
+    height: 14px;
+    ${(props) =>
+      props.type === 'health' &&
+      css`
+        background-color: #58cf55;
+      `};
+    ${(props) =>
+      props.type === 'mana' &&
+      css`
+        background-color: #55a3cf;
+      `};
+  }
 
   img {
     display: flex;

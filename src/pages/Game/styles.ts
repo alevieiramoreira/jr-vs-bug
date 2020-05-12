@@ -49,7 +49,7 @@ export const Deck = styled.div<DeckProps>`
 export const Status = styled.section``;
 
 export const Table = styled.section`
-  margin: 10px;
+  margin: 10px 0;
   padding: 10px;
   display: flex;
   align-self: center;
@@ -62,9 +62,31 @@ export const SelectedCard = styled.div`
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 15px;
+  align-items: center;
+  margin: 0 5px;
 
   div {
     margin: 5px;
+    &:hover {
+      button {
+        visibility: hidden;
+      }
+    }
+  }
+
+  span {
+    display: block;
+    max-width: 120px;
+  }
+
+  button {
+    width: 100px;
+    padding: 5px;
+    background-color: #fac60e;
+    margin-top: 5px;
+
+    &:hover {
+      filter: brightness(80%);
+    }
   }
 `;
