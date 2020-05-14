@@ -6,6 +6,16 @@ interface StatusBarProps {
   mana?: number;
 }
 
+const changeHealthColors = (healthPoints: number) => {
+  if (healthPoints >= 15) {
+    return '#58cf55';
+  }
+  if (healthPoints >= 10) {
+    return '#fa9828';
+  }
+  return '#d60f0f';
+};
+
 export const PlayerStatusContainer = styled.div`
   img {
     width: 100px;
@@ -25,9 +35,9 @@ export const StatusBar = styled.span<StatusBarProps>`
     max-width: calc(6 * ${(props) => props.health || props.mana}px);
     height: 14px;
     ${(props) =>
-      props.type === 'health' &&
+      props.health &&
       css`
-        background-color: #58cf55;
+        background-color: ${changeHealthColors(props.health)};
       `};
     ${(props) =>
       props.type === 'mana' &&
