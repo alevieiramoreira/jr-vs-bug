@@ -10,6 +10,7 @@ import { CardState, State } from '../../redux/types';
 import Card from '../../components/Card';
 import PlayerStatus from '../../components/PlayerStatus';
 import AudioPlayer from '../../components/AudioPlayer';
+import GameResult from '../../components/GameResult';
 
 const beepMp3 = require('../../assets/music/beep.mp3');
 
@@ -27,6 +28,10 @@ function Game(): ReactElement {
   const decks = players.map((player) => player.deck);
 
   const dispatch: Dispatch = useDispatch();
+
+  const handleBugTurn = useCallback(() => {
+    return 'a';
+  }, []);
 
   const handleCardSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -50,6 +55,7 @@ function Game(): ReactElement {
 
   return (
     <Container>
+      <GameResult />
       <Players>
         <AudioPlayer />
 

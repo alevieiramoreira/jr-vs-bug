@@ -6,7 +6,6 @@ interface DeckProps {
 
 export const Container = styled.div`
   display: flex;
-  padding: 0 15px;
   height: 100vh;
 `;
 
