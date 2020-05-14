@@ -7,7 +7,7 @@ function GameResult(): ReactElement {
     <ResultContainer>
       <BoxMessage>
         <h1>Você venceu!</h1>
-        <span>mensagem motivacional</span>
+        <span>mensagem motivacional :D</span>
       </BoxMessage>
     </ResultContainer>
   );

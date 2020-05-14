@@ -12,7 +12,7 @@ export const ResultContainer = styled.div`
   place-content: center;
   position: absolute;
   z-index: 3;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 
 export const BoxMessage = styled.div`
@@ -25,6 +25,19 @@ export const BoxMessage = styled.div`
   height: 65vh;
   background-color: #0f0f0f;
   text-align: center;
+  border: 3px solid;
+
+  @keyframes blink {
+    0% {
+      border-color: #0f0f0f;
+    }
+
+    50% {
+      border-color: green;
+    }
+  }
+
+  animation: blink 0.5s step-end infinite alternate;
 
   h1 {
     font-size: 70px;
