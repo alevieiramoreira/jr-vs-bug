@@ -6,7 +6,6 @@ interface DeckProps {
 
 export const Container = styled.div`
   display: flex;
-  padding: 0 15px;
   height: 100vh;
 `;
 
@@ -46,16 +45,16 @@ export const Deck = styled.div<DeckProps>`
     `}
 `;
 
-export const Status = styled.section``;
-
 export const Table = styled.section`
   margin: 10px 0;
   padding: 10px;
   display: flex;
+  justify-content: center;
   align-self: center;
   width: 100%;
   height: 350px;
   background-color: #625b64;
+  flex-wrap: wrap;
 
   div {
     button {
