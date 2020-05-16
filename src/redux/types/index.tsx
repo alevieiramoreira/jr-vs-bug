@@ -23,4 +23,3 @@ export interface CardState {
   description?: string;
   manaUsagePoints: number;
 }
-

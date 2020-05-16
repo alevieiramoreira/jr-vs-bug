@@ -3,9 +3,9 @@ import Input from '../../components/Input';
 import { Container } from './styles';
 
 interface Props {
-  name: String;
-  email: String;
-  password: String;
+  name: string;
+  email: string;
+  password: string;
 }
 
 function SignUp({ name, email, password }: Props): ReactElement {
@@ -14,9 +14,9 @@ function SignUp({ name, email, password }: Props): ReactElement {
       <div>
         <form>
           <h1>Logo/Title</h1>
-          <Input></Input>
-          <Input></Input>
-          <Input></Input>
+          <Input />
+          <Input />
+          <Input />
 
           {/* <ButtonRegister>
         <button name="register">Cadastrar</button>

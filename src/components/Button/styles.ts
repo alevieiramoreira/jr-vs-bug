@@ -10,7 +10,4 @@ export const ButtonContainer = styled.button<ButtonProps>`
   text-align: center;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  button {
-    background-color: transparent;
-  }
 `;
