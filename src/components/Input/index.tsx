@@ -1,18 +1,14 @@
 import React, { ReactElement, Component } from 'react';
-import { Container } from './styles';
+import { InputElement } from './styles';
 
 interface Props {
-  name: String;
-  email: String;
-  password: String;
+  placeholder: string;
+  width: number;
+  height: number;
 }
 
-function Input(): ReactElement {
-  return (
-    <Container>
-      <input type="name" placeholder="nome" />
-    </Container>
-  );
+function Input({ placeholder, width, height }: Props): ReactElement {
+  return <InputElement placeholder={placeholder} width={width} height={height} />;
 }
 
 export default Input;

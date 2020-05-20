@@ -1,7 +1,12 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
+  justify-content: center;
+  width: 700px;
+
+  h1 {
+    margin-bottom: 25px;
+  }
 
   form {
     display: flex;
@@ -9,7 +14,20 @@ export const Container = styled.div`
     flex-direction: column;
     align-items: center;
     height: 100vh;
-    background: #000000;
+  }
+
+  a {
+    margin-top: 15px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    color: #dcd5c6;
+    text-decoration: none;
+  }
+
+  input {
+    margin-bottom: 25px;
   }
 `;
 
@@ -17,7 +35,7 @@ export const ButtonRegister = styled.div`
   button {
     margin-top: 25px;
     position: absolute;
-    width: 449px;
+    width: 600px;
     height: 51px;
     left: 164px;
     top: 425px;
@@ -31,31 +49,9 @@ export const ButtonRegister = styled.div`
     line-height: 48px;
   }
 `;
-
-export const LinkRegister = styled.div`
-  a {
-    position: absolute;
-    margin-top: 25px;
-    width: 260px;
-    height: 36px;
-    left: 254px;
-    top: 500px;
-
-    font-style: normal;
-    font-weight: normal;
-    font-size: 36px;
-    line-height: 36px;
-    color: #dcd5c6;
-  }
-`;
-
 export const Title = styled.div`
   h1 {
-    position: absolute;
-    width: 257px;
-    height: 64px;
-    left: 255px;
-    top: 100px;
+    justify-content: center;
     font-style: normal;
     font-weight: 64px;
     font-size: 64px;
