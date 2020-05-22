@@ -1,21 +1,20 @@
 import React, { ReactElement } from 'react';
 
 import { CardContainer } from './styles';
-import { CardState } from '../../redux/types';
+import { CardProps } from '../../@types/types';
 
-export interface CardProps extends CardState {
+export interface CardStyleProps extends Partial<CardProps> {
   width: number;
   owner: 'dev' | 'bug';
   height: number;
-  isSelected?: boolean;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function Card({ id, width, height, name, owner, onClick }: CardProps): ReactElement {
+function Card({ width, height, name, owner, imgUrl, onClick }: CardStyleProps): ReactElement {
   return (
-    <CardContainer id={id} owner={owner} width={width} height={height}>
-      <div>{name}</div>
-      <button id={id} type="button" onClick={onClick}>
+    <CardContainer id={name} owner={owner} width={width} height={height}>
+      <img src={imgUrl} alt={`carta: ${name}`} />
+      <button id={name} type="button" onClick={onClick}>
         ver detalhes
       </button>
     </CardContainer>

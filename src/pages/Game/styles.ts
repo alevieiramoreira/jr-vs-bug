@@ -14,24 +14,34 @@ export const Players = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 20px;
+  margin: 0 40px;
 
   div + div {
     margin-top: 35px;
   }
+
+  button {
+    position: absolute;
+    bottom: 50px;
+    background-color: #fac60e;
+    padding: 10px;
+
+    &:hover {
+      filter: brightness(80%);
+    }
+  }
 `;
 
-export const Board = styled.section`
+export const BoardWithDecks = styled.section`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  max-width: 920px;
+  justify-items: center;
+  width: 850px;
   margin: 0 15px;
 `;
 
 export const Deck = styled.div<DeckProps>`
   display: flex;
-  width: 100%;
 
   ${(props) =>
     props.type === 'dev' &&
@@ -52,7 +62,7 @@ export const Table = styled.section`
   justify-content: center;
   align-self: center;
   width: 100%;
-  height: 350px;
+  height: 300px;
   background-color: #625b64;
   flex-wrap: wrap;
 

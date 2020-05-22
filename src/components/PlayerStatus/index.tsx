@@ -4,13 +4,13 @@ import heartImg from '../../assets/heart.png';
 import manaImg from '../../assets/mana.png';
 
 import { PlayerStatusContainer, StatusBar } from './styles';
-import { PlayerState } from '../../redux/types';
+import { PlayerProps } from '../../@types/types';
 
-function PlayerStatus({ imgUrl, health, mana }: PlayerState): ReactElement {
+function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
   return (
     <PlayerStatusContainer>
-      <img src={imgUrl} alt="avatar do bug" />
-      <StatusBar type="health" health={health}>
+      <img src={imgUrl} alt={`avatar do ${type}`} />
+      <StatusBar type="life" life={life}>
         <div>
           <img src={heartImg} alt="coração em pixel art" />
         </div>
