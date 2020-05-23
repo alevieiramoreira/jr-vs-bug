@@ -1,4 +1,4 @@
-export interface Game {
+export interface GameProps {
   id: string;
   move: number;
   status: 'playerWin' | 'bugWin' | 'playing';
@@ -10,7 +10,7 @@ export interface PlayerProps {
   nickname?: string;
   life: number;
   mana: number;
-  type: string;
+  type: 'JUNIOR' | 'BUG';
   imgUrl: string;
   cards: CardProps[];
 }
@@ -20,6 +20,7 @@ export interface CardProps {
   damage: number;
   manaPoints: number;
   description: string;
+  type: 'JUNIOR' | 'BUG';
   imgUrl: string;
   isSelected?: boolean;
 }

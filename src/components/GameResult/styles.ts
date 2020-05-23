@@ -1,8 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface BoxMessageProps {
-  result: any;
-  // receber prop para mudar a cor do box quando ganhar ou perder
+  result: 'playerWin' | 'bugWin' | 'playing';
 }
 
 export const ResultContainer = styled.div`
@@ -15,7 +14,7 @@ export const ResultContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
 `;
 
-export const BoxMessage = styled.div`
+export const BoxMessage = styled.div<BoxMessageProps>`
   display: flex;
   flex-direction: column;
   align-self: center;
@@ -26,6 +25,7 @@ export const BoxMessage = styled.div`
   background-color: #0f0f0f;
   text-align: center;
   border: 3px solid;
+  padding: 15px;
 
   @keyframes blink {
     0% {
@@ -33,7 +33,16 @@ export const BoxMessage = styled.div`
     }
 
     50% {
-      border-color: green;
+      ${(props) =>
+        props.result === 'playerWin' &&
+        css`
+          border-color: green;
+        `}
+      ${(props) =>
+        props.result === 'bugWin' &&
+        css`
+          border-color: red;
+        `}
     }
   }
 

@@ -5,14 +5,13 @@ import { CardProps } from '../../@types/types';
 
 export interface CardStyleProps extends Partial<CardProps> {
   width: number;
-  owner: 'dev' | 'bug';
   height: number;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function Card({ width, height, name, owner, imgUrl, onClick }: CardStyleProps): ReactElement {
+function Card({ imgUrl, onClick, name, ...rest }: CardStyleProps): ReactElement {
   return (
-    <CardContainer id={name} owner={owner} width={width} height={height}>
+    <CardContainer {...rest}>
       <img src={imgUrl} alt={`carta: ${name}`} />
       <button id={name} type="button" onClick={onClick}>
         ver detalhes

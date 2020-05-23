@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface DeckProps {
-  type: 'dev' | 'bug';
+  type: 'JUNIOR' | 'BUG';
 }
 
 export const Container = styled.div`
@@ -44,12 +44,12 @@ export const Deck = styled.div<DeckProps>`
   display: flex;
 
   ${(props) =>
-    props.type === 'dev' &&
+    props.type === 'JUNIOR' &&
     css`
       align-self: flex-end;
     `}
   ${(props) =>
-    props.type === 'bug' &&
+    props.type === 'BUG' &&
     css`
       align-self: flex-start;
     `}
@@ -73,7 +73,7 @@ export const Table = styled.section`
   }
 `;
 
-export const SelectedCard = styled.div`
+export const SelectedCard = styled.div<DeckProps>`
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
@@ -104,4 +104,12 @@ export const SelectedCard = styled.div`
       filter: brightness(80%);
     }
   }
+
+  ${(props) =>
+    props.type === 'BUG' &&
+    css`
+      button {
+        display: none;
+      }
+    `}
 `;
