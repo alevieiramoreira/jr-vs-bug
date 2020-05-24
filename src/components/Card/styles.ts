@@ -29,7 +29,7 @@ export const CardContainer = styled.div<ContainerProps>`
 
   img {
     width: 70px;
-    max-height: 80px;
+    max-height: 100px;
   }
 
   & + div {

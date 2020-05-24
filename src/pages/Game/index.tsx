@@ -7,23 +7,20 @@ import AudioPlayer from '../../components/AudioPlayer';
 import GameResult from '../../components/GameResult';
 
 import api from '../../services/api';
+import { filterUnusedCards, updateMove, updateRound, updateSkipMove } from '../../utils/game';
 
-import { PlayerProps, CardProps, GameProps } from '../../@types/types';
+import { Decks, CardProps, GameProps } from '../../@types/types';
 import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players } from './styles';
 
 const beepMp3 = require('../../assets/music/beep.mp3');
 
 const beep = new UIfx(beepMp3);
 
-interface Decks {
-  juniorDeck?: CardProps[];
-  bugDeck?: CardProps[];
-}
-
 function Game(): ReactElement {
   const [game, setGame] = useState<GameProps>({} as GameProps);
   const [decks, setDecks] = useState<Decks>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [waitRound, setwaitRound] = useState<boolean>(false);
   const [cardSelected, setCardSelected] = useState<CardProps | null>();
   const [cardsOnTable, setCardsOnTable] = useState<CardProps[]>([]);
 
@@ -41,31 +38,48 @@ function Game(): ReactElement {
       setLoading(false);
     }
     getGameStart();
-  }, [game.players]);
+  }, []);
+
+  const handlefinishRound = useCallback(() => {
+    const updatedGame = updateRound(decks);
+
+    setwaitRound(false);
+
+    setGame(updatedGame);
+
+    setDecks({
+      bugDeck: updatedGame.players[0].cards,
+      juniorDeck: updatedGame.players[1].cards,
+    });
+
+    setCardsOnTable([]);
+    setCardSelected(null);
+  }, [decks]);
 
   const handleBugTurn = useCallback(() => {
-    const { players } = game;
+    const randomCard = decks?.bugDeck?.[Math.floor(Math.random() * decks?.bugDeck?.length)];
 
-    const randomCard = players[0].cards[Math.floor(Math.random() * players[0].cards.length)];
+    if (randomCard) {
+      randomCard.isSelected = true;
+      randomCard.type = 'BUG';
 
-    randomCard.isSelected = true;
-    randomCard.type = 'BUG';
+      const newbugDeck = filterUnusedCards(decks?.bugDeck);
 
-    const newbugDeck = game.players[0].cards.filter((card) => !card.isSelected);
+      setDecks((previousCards) => ({
+        bugDeck: newbugDeck,
+        juniorDeck: previousCards?.juniorDeck,
+      }));
 
-    setDecks((previousCards) => ({
-      bugDeck: newbugDeck,
-      juniorDeck: previousCards?.juniorDeck,
-    }));
+      setCardSelected(randomCard);
+      setCardsOnTable((previousCards) => [...previousCards, randomCard]);
 
-    setCardSelected(randomCard);
-    setCardsOnTable((previousCards) => [...previousCards, randomCard]);
-    // api.post('move', {
-    //   player: game.players[0],
-    //   idGame: game.id,
-    //   cardName: randomCard,
-    // }).then(response => setGame(response.data));
-  }, [game]);
+      setwaitRound(true);
+
+      setTimeout(() => {
+        handlefinishRound();
+      }, 6000);
+    }
+  }, [decks, handlefinishRound]);
 
   const handlePlayerSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -92,18 +106,16 @@ function Game(): ReactElement {
       setCardsOnTable([...cardsOnTable, newCardSelected]);
       setCardSelected(null);
 
-      const newjuniorDeck = decks?.juniorDeck?.filter((card) => !card.isSelected);
+      const newjuniorDeck = filterUnusedCards(decks?.juniorDeck);
 
       setDecks((previousCards) => ({
         bugDeck: previousCards?.bugDeck,
         juniorDeck: newjuniorDeck,
       }));
 
-      // api.post('move', {
-      //   player: game.players[0],
-      //   idGame: game.id,
-      //   cardName: newCardSelected,
-      // }).then(response => setGame(response.data));
+      const updatedGame = updateMove(game?.players?.[1], game.id, newCardSelected.name);
+
+      setGame(updatedGame);
 
       beep.play();
 
@@ -111,19 +123,18 @@ function Game(): ReactElement {
         handleBugTurn();
       }, 5000);
     },
-    [cardsOnTable, handleBugTurn, decks],
+    [cardsOnTable, handleBugTurn, decks, game],
   );
 
   const handleSkipMove = useCallback(
     (playerId?: string) => {
-      api.post('skipround', { player: playerId, idGame: game.id });
+      updateSkipMove(game.id, playerId);
+      setTimeout(() => {
+        handleBugTurn();
+      }, 5000);
     },
-    [game.id],
+    [game.id, handleBugTurn],
   );
-
-  const finishCurrentRound = useCallback(() => {
-    api.post('finishround', decks);
-  }, [game]);
 
   return (
     <>
@@ -172,6 +183,7 @@ function Game(): ReactElement {
               {cardsOnTable.map((card) => (
                 <Card {...card} type={card.type} width={90} height={110} />
               ))}
+              {waitRound && <h1>Atualizando rodada...</h1>}
             </Table>
             <Deck type={game.players[1].type}>
               {decks?.juniorDeck?.map((card) => (

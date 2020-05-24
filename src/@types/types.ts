@@ -20,7 +20,12 @@ export interface CardProps {
   damage: number;
   manaPoints: number;
   description: string;
-  type: 'JUNIOR' | 'BUG';
+  type?: 'JUNIOR' | 'BUG';
   imgUrl: string;
   isSelected?: boolean;
+}
+
+export interface Decks {
+  juniorDeck?: CardProps[];
+  bugDeck?: CardProps[];
 }

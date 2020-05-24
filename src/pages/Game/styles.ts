@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface DeckProps {
-  type: 'JUNIOR' | 'BUG';
+  type?: 'JUNIOR' | 'BUG';
 }
 
 export const Container = styled.div`
@@ -70,6 +70,25 @@ export const Table = styled.section`
     button {
       display: none;
     }
+  }
+
+  h1 {
+    font-size: 30px;
+    display: flex;
+    position: fixed;
+    bottom: 200px;
+
+    @keyframes blink {
+      0% {
+        opacity: 0%;
+      }
+
+      50% {
+        opacity: 100%;
+      }
+    }
+
+    animation: blink 0.5s step-end infinite alternate;
   }
 `;
 
