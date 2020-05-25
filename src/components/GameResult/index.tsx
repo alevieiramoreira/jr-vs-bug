@@ -3,14 +3,14 @@ import React, { ReactElement, useState, useEffect } from 'react';
 import { ResultContainer, BoxMessage } from './styles';
 
 interface GameResultProps {
-  result: 'playerWin' | 'bugWin' | 'playing';
+  winner: 'bug' | 'junior' | null;
 }
 
-function GameResult({ result }: GameResultProps): ReactElement {
+function GameResult({ winner }: GameResultProps): ReactElement {
   const [message, setMessage] = useState({ title: '', text: '' });
 
   useEffect(() => {
-    if (result === 'playerWin') {
+    if (winner === 'junior') {
       setMessage({
         title: 'Você venceu!',
         text: 'você derrotou o bug com um código limpo e escalável :D',
@@ -21,11 +21,11 @@ function GameResult({ result }: GameResultProps): ReactElement {
         text: 'você foi obrigado a fazer uma gambiarra em php :(',
       });
     }
-  }, [result]);
+  }, [winner]);
 
   return (
     <ResultContainer>
-      <BoxMessage result={result}>
+      <BoxMessage winner={winner}>
         <h1>{message.title}</h1>
         <span>{message.text}</span>
       </BoxMessage>

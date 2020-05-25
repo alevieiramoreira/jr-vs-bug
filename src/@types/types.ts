@@ -1,7 +1,8 @@
 export interface GameProps {
   id: string;
   move: number;
-  status: 'playerWin' | 'bugWin' | 'playing';
+  status: 'running' | 'finished';
+  winner: 'bug' | 'junior' | null;
   players: PlayerProps[];
 }
 

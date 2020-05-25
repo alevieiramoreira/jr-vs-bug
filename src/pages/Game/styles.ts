@@ -16,10 +16,6 @@ export const Players = styled.div`
   align-items: center;
   margin: 0 40px;
 
-  div + div {
-    margin-top: 35px;
-  }
-
   button {
     position: absolute;
     bottom: 50px;
@@ -72,13 +68,13 @@ export const Table = styled.section`
     }
   }
 
-  h1 {
+  span {
     font-size: 30px;
-    display: flex;
     position: fixed;
     bottom: 200px;
+    display: flex;
 
-    @keyframes blink {
+    @keyframes blinktext {
       0% {
         opacity: 0%;
       }
@@ -88,7 +84,7 @@ export const Table = styled.section`
       }
     }
 
-    animation: blink 0.5s step-end infinite alternate;
+    animation: blinktext 0.5s step-end infinite alternate;
   }
 `;
 

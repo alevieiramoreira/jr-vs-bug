@@ -7,17 +7,36 @@ export function filterUnusedCards(deck?: CardProps[]) {
   return filteredDeck;
 }
 
-export function updateMove(player: PlayerProps, idGame: string, cardName: string) {
-  api.post('move', {
-    player: player.nickname,
-    idGame,
-    cardName,
-  });
+export const getGameStart = async (): Promise<any> => {
+  try {
+    const response = await api.get('game').then((res) => res.data);
+
+    return response;
+  } catch (error) {
+    throw new Error('Deu erro kkkk');
+  }
+};
+
+export const updateMove = (player: PlayerProps, idGame: string, cardName: string) => {
+  try {
+    api
+      .post('move', {
+        player: player.nickname,
+        idGame,
+        cardName,
+      })
+      .then((res) => {
+        return res.data;
+      });
+  } catch (error) {
+    throw new Error('Ocorreu algum erro inesperado, tente novamente.');
+  }
 
   const fakeResponse: GameProps = {
     id: '1',
     move: 1,
-    status: 'playing',
+    status: 'running',
+    winner: null,
     players: [
       {
         life: 14,
@@ -97,19 +116,28 @@ export function updateMove(player: PlayerProps, idGame: string, cardName: string
   };
 
   return fakeResponse;
-}
+};
 
 export function updateSkipMove(idGame: string, playerId?: string) {
-  api.post('skipround', { player: playerId, idGame });
+  try {
+    api.post('skipround', { player: playerId, idGame });
+  } catch (error) {
+    throw new Error('Msg de erro');
+  }
 }
 
 export function updateRound(decks?: Decks) {
-  api.post('finishround', decks);
+  try {
+    api.post('finishround', decks);
+  } catch (error) {
+    throw new Error('Msg de erro');
+  }
 
   const fakeResponse: GameProps = {
     id: '1',
     move: 1,
-    status: 'playing',
+    status: 'running',
+    winner: null,
     players: [
       {
         life: 14,

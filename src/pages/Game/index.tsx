@@ -7,7 +7,12 @@ import AudioPlayer from '../../components/AudioPlayer';
 import GameResult from '../../components/GameResult';
 
 import api from '../../services/api';
-import { filterUnusedCards, updateMove, updateRound, updateSkipMove } from '../../utils/game';
+import {
+  filterUnusedCards,
+  updateMove,
+  updateRound,
+  updateSkipMove,
+} from '../../utils/gameActions';
 
 import { Decks, CardProps, GameProps } from '../../@types/types';
 import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players } from './styles';
@@ -30,11 +35,13 @@ function Game(): ReactElement {
 
       await api.get('game').then((response) => {
         setGame(response.data);
+
         setDecks({
           bugDeck: response.data.players[0].cards,
           juniorDeck: response.data.players[1].cards,
         });
       });
+
       setLoading(false);
     }
     getGameStart();
@@ -44,7 +51,6 @@ function Game(): ReactElement {
     const updatedGame = updateRound(decks);
 
     setwaitRound(false);
-
     setGame(updatedGame);
 
     setDecks({
@@ -72,7 +78,6 @@ function Game(): ReactElement {
 
       setCardSelected(randomCard);
       setCardsOnTable((previousCards) => [...previousCards, randomCard]);
-
       setwaitRound(true);
 
       setTimeout(() => {
@@ -129,6 +134,7 @@ function Game(): ReactElement {
   const handleSkipMove = useCallback(
     (playerId?: string) => {
       updateSkipMove(game.id, playerId);
+
       setTimeout(() => {
         handleBugTurn();
       }, 5000);
@@ -140,7 +146,7 @@ function Game(): ReactElement {
     <>
       {!loading && (
         <Container>
-          {game.status !== 'playing' && <GameResult result={game.status} />}
+          {game.status === 'finished' && <GameResult winner={game.winner} />}
           <Players>
             {game.players.map((player) => (
               <PlayerStatus
@@ -165,7 +171,7 @@ function Game(): ReactElement {
           </Players>
 
           <BoardWithDecks>
-            <Deck type="BUG">
+            <Deck type={game.players[0].type}>
               {decks?.bugDeck?.map((card) => (
                 <Card
                   key={card.name}
@@ -183,7 +189,7 @@ function Game(): ReactElement {
               {cardsOnTable.map((card) => (
                 <Card {...card} type={card.type} width={90} height={110} />
               ))}
-              {waitRound && <h1>Atualizando rodada...</h1>}
+              {waitRound && <span>Atualizando rodada...</span>}
             </Table>
             <Deck type={game.players[1].type}>
               {decks?.juniorDeck?.map((card) => (
