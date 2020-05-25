@@ -2,9 +2,9 @@ import React, { ReactElement, Component } from 'react';
 import { Container } from './styles';
 
 interface Props {
-  name: String;
-  email: String;
-  password: String;
+  name: string;
+  email: string;
+  password: string;
 }
 
 function Input(): ReactElement {

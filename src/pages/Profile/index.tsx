@@ -1,13 +1,24 @@
 import React, { ReactElement } from 'react';
 
-import { Container } from './styles';
+import { Container, Console, ProfileInformation, Photo, PlayerInfo } from './styles';
 
 import Button from '../../components/Button';
+import devImg from '../../assets/player.png';
 
 function Profile(): ReactElement {
   return (
     <Container>
-      <Button name="Oi Ude" width={70} height={30} onClick={() => alert('exemplo')} />
+      <ProfileInformation>
+        <Photo>
+          <img src={devImg} />
+        </Photo>
+        <PlayerInfo>
+          <div>Trofeu 10X x1</div>
+          <div>Suzana Furacao</div>
+        </PlayerInfo>
+      </ProfileInformation>
+      <Console>_> Textinho de terminal</Console>
+      <Button name="Jogar!" width={200} height={51} onClick={() => alert('exemplo')} />
     </Container>
   );
 }
