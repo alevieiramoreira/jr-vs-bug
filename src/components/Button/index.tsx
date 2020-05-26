@@ -1,11 +1,12 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ButtonHTMLAttributes } from 'react';
 
 import { ButtonContainer } from './styles';
 
-interface Props {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
   width: number;
   height: number;
+
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
