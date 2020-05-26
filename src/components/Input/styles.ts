@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface Props {
-  placeholder: String;
+  placeholder: string;
   width: number;
   height: number;
 }

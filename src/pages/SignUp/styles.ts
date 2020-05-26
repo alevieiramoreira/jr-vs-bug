@@ -30,32 +30,3 @@ export const Container = styled.div`
     margin-bottom: 25px;
   }
 `;
-
-export const ButtonRegister = styled.div`
-  button {
-    margin-top: 25px;
-    position: absolute;
-    width: 600px;
-    height: 51px;
-    left: 164px;
-    top: 425px;
-
-    background: #fac60e;
-    color: #000000;
-    font-family: VT323;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 25px;
-    line-height: 48px;
-  }
-`;
-export const Title = styled.div`
-  h1 {
-    justify-content: center;
-    font-style: normal;
-    font-weight: 64px;
-    font-size: 64px;
-    line-height: 64px;
-    color: #dcd5c6;
-  }
-`;

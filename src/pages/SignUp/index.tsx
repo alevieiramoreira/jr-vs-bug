@@ -1,30 +1,51 @@
-import React, { ReactElement, Component } from 'react';
+import React, { ReactElement, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import InputElement from '../../components/Input';
+import Button from '../../components/Button';
+
 import { Container } from './styles';
-import { ButtonContainer } from '../../components/Button/styles';
+import api from '../../services/api';
 
-interface Props {
-  type: string;
-  placeholder: string;
-  name: string;
-  nameInput: String;
-  width: number;
-  height: number;
-}
+function SignUp(): ReactElement {
+  const [nickName, setNickName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-function SignUp({ name, height, width }: Props): ReactElement {
+  async function register(event: React.FormEvent) {
+    event.preventDefault();
+
+    try {
+      await api
+        .post('user', {
+          nickName: nickName,
+          password: password,
+        })
+        .then((res) => console.log(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <Container>
       <div>
-        <form>
+        <form onSubmit={register}>
           <h1>Logo/Title</h1>
-          <InputElement placeholder={'nome'} width={349} height={51} />
-          <InputElement placeholder={'email'} width={349} height={51} />
-          <InputElement placeholder={'password'} width={349} height={51} />
-          <ButtonContainer width={344} height={51} name={name}>
-            {'Cadastrar'}
-          </ButtonContainer>
-          <a href="#"> Já possuo cadastro</a>
+          <InputElement
+            type="text"
+            placeholder="Nickname"
+            onChange={(event) => setNickName(event.target.value)}
+            width={349}
+            height={51}
+          />
+          <InputElement
+            type="password"
+            placeholder="Password"
+            width={349}
+            height={51}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <Button type="submit" name="Cadastrar" width={349} height={51} />
+          <Link to="/login"> Já possuo cadastro</Link>
         </form>
       </div>
     </Container>
