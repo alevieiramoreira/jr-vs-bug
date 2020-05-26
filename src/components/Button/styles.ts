@@ -11,4 +11,8 @@ export const ButtonContainer = styled.button<ButtonProps>`
   font-size: 25px;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
+
+  &:hover {
+    filter: brightness(80%);
+  }
 `;

@@ -24,4 +24,8 @@ export const InputElement = styled.input<Props>`
   font-style: normal;
   font-weight: normal;
   font-size: 20px;
+
+  &:focus {
+    border-color: #fac60e;
+  }
 `;

@@ -22,7 +22,7 @@ export const Container = styled.div`
     margin-top: 15px;
     font-style: normal;
     font-weight: normal;
-    font-size: 30px;
+    font-size: 20px;
     line-height: 36px;
     color: #dcd5c6;
     text-decoration: none;
