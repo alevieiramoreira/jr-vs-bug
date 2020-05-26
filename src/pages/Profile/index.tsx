@@ -10,7 +10,7 @@ function Profile(): ReactElement {
     <Container>
       <ProfileInformation>
         <Photo>
-          <img src={devImg} />
+          <img src={devImg} alt="seu avatar, imagem em estilo 8 bit" />
         </Photo>
         <PlayerInfo>
           <div>Trofeu 10X x1</div>
@@ -21,6 +21,5 @@ function Profile(): ReactElement {
       <Button name="Jogar!" width={200} height={51} onClick={() => alert('exemplo')} />
     </Container>
   );
-
-
+}
 export default Profile;
