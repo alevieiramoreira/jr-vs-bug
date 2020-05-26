@@ -1,4 +1,5 @@
 import { CardProps, PlayerProps, Decks, GameProps } from '../@types/types';
+
 import api from '../services/api';
 
 export function filterUnusedCards(deck?: CardProps[]) {
@@ -7,7 +8,7 @@ export function filterUnusedCards(deck?: CardProps[]) {
   return filteredDeck;
 }
 
-export const getGameStart = async (): Promise<any> => {
+export const getGameStart = async (): Promise<GameProps> => {
   try {
     const response = await api.get('game').then((res) => res.data);
 

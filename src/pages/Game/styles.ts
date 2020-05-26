@@ -4,6 +4,10 @@ interface DeckProps {
   type?: 'JUNIOR' | 'BUG';
 }
 
+interface BubbleProps {
+  moveNumber: number;
+}
+
 export const Container = styled.div`
   display: flex;
   height: 100vh;
@@ -127,4 +131,56 @@ export const SelectedCard = styled.div<DeckProps>`
         display: none;
       }
     `}
+`;
+
+export const Bubble = styled.div<BubbleProps>`
+  position: absolute;
+  background: #004080;
+  border-radius: 0.4em;
+  height: 40px;
+  width: 120px;
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  bottom: 200px;
+  left: 160px;
+  top: 175px;
+  left: 160px;
+
+  ${(props) =>
+    props.moveNumber % 2 === 0
+      ? css`
+          top: 175px;
+          left: 160px;
+        `
+      : css`
+          bottom: 200px;
+          left: 160px;
+        `}
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0px;
+    height: 0px;
+    border: 10px solid transparent;
+    border-right-color: #004080;
+    border-left: 0;
+    margin-top: -10px;
+    margin-left: -10px;
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0%;
+    }
+
+    50% {
+      opacity: 100%;
+    }
+  }
+
+  animation: pulse 0.7s step-end infinite alternate;
 `;

@@ -15,7 +15,7 @@ import {
 } from '../../utils/gameActions';
 
 import { Decks, CardProps, GameProps } from '../../@types/types';
-import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players } from './styles';
+import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players, Bubble } from './styles';
 
 const beepMp3 = require('../../assets/music/beep.mp3');
 
@@ -26,6 +26,7 @@ function Game(): ReactElement {
   const [decks, setDecks] = useState<Decks>();
   const [loading, setLoading] = useState<boolean>(true);
   const [waitRound, setwaitRound] = useState<boolean>(false);
+  const [waitingNewMovement, setWaitingNewMovement] = useState<boolean>(false);
   const [cardSelected, setCardSelected] = useState<CardProps | null>();
   const [cardsOnTable, setCardsOnTable] = useState<CardProps[]>([]);
 
@@ -92,13 +93,13 @@ function Game(): ReactElement {
         (card) => card.name === event.currentTarget.id,
       );
 
+      beep.play();
+
       if (newSelectedCard) {
         newSelectedCard.type = 'JUNIOR';
       }
 
       setCardSelected(newSelectedCard);
-
-      beep.play();
     },
     [game],
   );
@@ -124,8 +125,11 @@ function Game(): ReactElement {
 
       beep.play();
 
+      setWaitingNewMovement(true);
+
       setTimeout(() => {
         handleBugTurn();
+        setWaitingNewMovement(false);
       }, 5000);
     },
     [cardsOnTable, handleBugTurn, decks, game],
@@ -134,18 +138,19 @@ function Game(): ReactElement {
   const handleSkipMove = useCallback(
     (playerId?: string) => {
       updateSkipMove(game.id, playerId);
-
       setTimeout(() => {
         handleBugTurn();
       }, 5000);
     },
-    [game.id, handleBugTurn],
+    [game.id, handleBugTurn, game.move],
   );
 
   return (
     <>
       {!loading && (
         <Container>
+          {waitingNewMovement && <Bubble moveNumber={game.move}>kkkkkkkkkkkk</Bubble>}
+
           {game.status === 'finished' && <GameResult winner={game.winner} />}
           <Players>
             {game.players.map((player) => (
@@ -159,7 +164,6 @@ function Game(): ReactElement {
                 type={player.type}
               />
             ))}
-
             <button
               type="button"
               onClick={() => {
@@ -169,7 +173,6 @@ function Game(): ReactElement {
               passar a vez
             </button>
           </Players>
-
           <BoardWithDecks>
             <Deck type={game.players[0].type}>
               {decks?.bugDeck?.map((card) => (
@@ -207,7 +210,6 @@ function Game(): ReactElement {
               ))}
             </Deck>
           </BoardWithDecks>
-
           {cardSelected && (
             <SelectedCard type={cardSelected.type}>
               <Card

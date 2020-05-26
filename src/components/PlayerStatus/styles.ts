@@ -50,17 +50,6 @@ export const StatusBar = styled.div<StatusBarProps>`
       css`
         background-color: #55a3cf;
       `};
-    /*
-    @keyframes pulse {
-      0% {
-        background-color: #fff;
-      }
-      100% {
-        background-color: red;
-      }
-    }
-
-    animation: pulse 0.5s; */
   }
 
   img {
