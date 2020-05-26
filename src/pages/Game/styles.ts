@@ -38,6 +38,7 @@ export const BoardWithDecks = styled.section`
   justify-items: center;
   width: 850px;
   margin: 0 15px;
+  height: 100vh;
 `;
 
 export const Deck = styled.div<DeckProps>`
@@ -62,9 +63,9 @@ export const Table = styled.section`
   justify-content: center;
   align-self: center;
   width: 100%;
-  height: 300px;
+  min-height: 290px;
+  max-height: 600px;
   background-color: #625b64;
-  flex-wrap: wrap;
 
   div {
     button {
@@ -75,7 +76,7 @@ export const Table = styled.section`
   span {
     font-size: 30px;
     position: fixed;
-    bottom: 200px;
+    bottom: 35%;
     display: flex;
 
     @keyframes blinktext {
@@ -138,14 +139,11 @@ export const Bubble = styled.div<BubbleProps>`
   background: #004080;
   border-radius: 0.4em;
   height: 40px;
-  width: 120px;
+  width: 140px;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 15px;
-  bottom: 200px;
-  left: 160px;
-  top: 175px;
-  left: 160px;
 
   ${(props) =>
     props.moveNumber % 2 === 0
@@ -182,5 +180,5 @@ export const Bubble = styled.div<BubbleProps>`
     }
   }
 
-  animation: pulse 0.7s step-end infinite alternate;
+  animation: pulse 1s step-end infinite alternate;
 `;

@@ -17,8 +17,8 @@ function SignUp(): ReactElement {
     try {
       await api
         .post('user', {
-          nickName: nickName,
-          password: password,
+          nickName,
+          password,
         })
         .then((res) => console.log(res.data));
     } catch (error) {

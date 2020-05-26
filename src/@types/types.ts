@@ -30,3 +30,8 @@ export interface Decks {
   juniorDeck?: CardProps[];
   bugDeck?: CardProps[];
 }
+
+export interface MovementData {
+  updateMovement: boolean;
+  text: string;
+}

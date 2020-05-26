@@ -4,16 +4,16 @@ import api from '../services/api';
 
 interface AuthState {
   token: string;
-  user: object;
+  id: number;
 }
 
 interface SignInCredentials {
-  nickname: string;
+  nickName: string;
   password: string;
 }
 
 interface AuthContextState {
-  user: object;
+  userId: number;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -23,37 +23,38 @@ const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
     const token = localStorage.getItem('@JrVsBug:token');
-    const user = localStorage.getItem('@JrVsBug:user');
+    const id = localStorage.getItem('@JrVsBug:id');
 
-    if (token && user) {
-      return { token, user: JSON.parse(user) };
+    if (token && id) {
+      return { token, id: JSON.parse(id) };
     }
 
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ email, password }) => {
-    const response = await api.post('sessions', {
-      email,
+  const signIn = useCallback(async ({ nickName, password }) => {
+    const response = await api.post('user/login', {
+      nickName,
       password,
     });
-    const { token, user } = response.data;
+
+    const { token, id } = response.data;
 
     localStorage.setItem('@JrVsBug:token', token);
-    localStorage.setItem('@JrVsBug:user', JSON.stringify(user));
+    localStorage.setItem('@JrVsBug:id', JSON.stringify(id));
 
-    setData({ token, user });
+    setData({ token, id });
   }, []);
 
   const signOut = useCallback(() => {
     localStorage.remove('@JrVsBug:token');
-    localStorage.remove('@JrVsBug:user');
+    localStorage.remove('@JrVsBug:id');
 
     setData({} as AuthState);
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider value={{ userId: data.id, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
