@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const token = localStorage.getItem('@JrVsBug:token');
+
 const api = axios.create({
-  baseURL: 'http://demo2971522.mockable.io/',
+  baseURL: 'https://masterdev1.herokuapp.com/',
+  headers: {
+    token,
+  },
 });
 
 export default api;

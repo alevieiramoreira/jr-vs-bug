@@ -1,30 +1,51 @@
-import React, { ReactElement, Component } from 'react';
-import Input from '../../components/Input';
+import React, { ReactElement, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import InputElement from '../../components/Input';
+import Button from '../../components/Button';
+
 import { Container } from './styles';
+import api from '../../services/api';
 
-interface Props {
-  name: string;
-  email: string;
-  password: string;
-}
+function SignUp(): ReactElement {
+  const [nickName, setNickName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
-function SignUp({ name, email, password }: Props): ReactElement {
+  async function register(event: React.FormEvent) {
+    event.preventDefault();
+
+    try {
+      await api
+        .post('user', {
+          nickName,
+          password,
+        })
+        .then((res) => console.log(res.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <Container>
       <div>
-        <form>
+        <form onSubmit={register}>
           <h1>Logo/Title</h1>
-          <Input />
-          <Input />
-          <Input />
-
-          {/* <ButtonRegister>
-        <button name="register">Cadastrar</button>
-        </ButtonRegister>
-
-        <LinkRegister>
-        <a href="">já possuo cadastro</a>
-        </LinkRegister> */}
+          <InputElement
+            type="text"
+            placeholder="Nickname"
+            onChange={(event) => setNickName(event.target.value)}
+            width={349}
+            height={51}
+          />
+          <InputElement
+            type="password"
+            placeholder="Password"
+            width={349}
+            height={51}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <Button type="submit" name="Cadastrar" width={349} height={51} />
+          <Link to="/login"> Já possuo cadastro</Link>
         </form>
       </div>
     </Container>

@@ -21,6 +21,6 @@ function Profile(): ReactElement {
       <Button name="Jogar!" width={200} height={51} onClick={() => alert('exemplo')} />
     </Container>
   );
-}
+
 
 export default Profile;

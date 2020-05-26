@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
 
 interface ContainerProps {
-  owner: 'dev' | 'bug';
+  type?: 'JUNIOR' | 'BUG';
   width: number;
   height: number;
+  isSelected?: boolean;
 }
 
 export const CardContainer = styled.div<ContainerProps>`
@@ -15,19 +16,20 @@ export const CardContainer = styled.div<ContainerProps>`
   height: ${(props) => props.height}px;
 
   ${(props) =>
-    props.owner === 'bug' &&
+    props.type === 'BUG' &&
     css`
       background-color: #cb0c59;
     `}
   ${(props) =>
-    props.owner === 'dev' &&
+    props.type === 'JUNIOR' &&
     css`
       color: #000;
       background-color: #2dd5ed;
     `}
 
-  span {
-    color: #fff;
+  img {
+    width: 70px;
+    max-height: 100px;
   }
 
   & + div {
@@ -44,7 +46,15 @@ export const CardContainer = styled.div<ContainerProps>`
 
   :hover {
     ${(props) =>
-      props.owner === 'dev' &&
+      props.type === 'JUNIOR' &&
+      css`
+        background-color: #898f8f;
+        button {
+          visibility: visible;
+        }
+      `};
+    ${(props) =>
+      props.type === 'JUNIOR' &&
       css`
         background-color: #898f8f;
         button {
