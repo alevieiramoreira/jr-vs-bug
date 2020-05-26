@@ -1,125 +1,233 @@
-import React, { ReactElement, useCallback, useState } from 'react';
-import { Dispatch } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { ReactElement, useCallback, useState, useEffect } from 'react';
 import UIfx from 'uifx';
-
-import { Container, Deck, Board, Table, SelectedCard, Players } from './styles';
-
-import { CardState, State } from '../../redux/types';
 
 import Card from '../../components/Card';
 import PlayerStatus from '../../components/PlayerStatus';
 import AudioPlayer from '../../components/AudioPlayer';
 import GameResult from '../../components/GameResult';
 
+import api from '../../services/api';
+import {
+  filterUnusedCards,
+  updateMove,
+  updateRound,
+  updateSkipMove,
+} from '../../utils/gameActions';
+
+import { Decks, CardProps, GameProps } from '../../@types/types';
+import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players, Bubble } from './styles';
+
 const beepMp3 = require('../../assets/music/beep.mp3');
 
 const beep = new UIfx(beepMp3);
 
-interface StateProps {
-  game: State;
-}
-
 function Game(): ReactElement {
-  const [cardSelected, setCardSelected] = useState<CardState>();
-  const [cardsOnTable, setCardsOnTable] = useState<CardState[]>([]);
+  const [game, setGame] = useState<GameProps>({} as GameProps);
+  const [decks, setDecks] = useState<Decks>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [waitRound, setwaitRound] = useState<boolean>(false);
+  const [waitingNewMovement, setWaitingNewMovement] = useState<boolean>(false);
+  const [cardSelected, setCardSelected] = useState<CardProps | null>();
+  const [cardsOnTable, setCardsOnTable] = useState<CardProps[]>([]);
 
-  const players = useSelector((state: StateProps) => state.game.players);
-  const decks = players.map((player) => player.deck);
+  useEffect(() => {
+    async function getGameStart() {
+      setLoading(true);
 
-  const dispatch: Dispatch = useDispatch();
+      await api.get('game').then((response) => {
+        setGame(response.data);
 
-  const handleBugTurn = useCallback(() => {
-    return 'a';
+        setDecks({
+          bugDeck: response.data.players[0].cards,
+          juniorDeck: response.data.players[1].cards,
+        });
+      });
+
+      setLoading(false);
+    }
+    getGameStart();
   }, []);
 
-  const handleCardSelect = useCallback(
+  const handlefinishRound = useCallback(() => {
+    const updatedGame = updateRound(decks);
+
+    setwaitRound(false);
+    setGame(updatedGame);
+
+    setDecks({
+      bugDeck: updatedGame.players[0].cards,
+      juniorDeck: updatedGame.players[1].cards,
+    });
+
+    setCardsOnTable([]);
+    setCardSelected(null);
+  }, [decks]);
+
+  const handleBugTurn = useCallback(() => {
+    const randomCard = decks?.bugDeck?.[Math.floor(Math.random() * decks?.bugDeck?.length)];
+
+    if (randomCard) {
+      randomCard.isSelected = true;
+      randomCard.type = 'BUG';
+
+      const newbugDeck = filterUnusedCards(decks?.bugDeck);
+
+      setDecks((previousCards) => ({
+        bugDeck: newbugDeck,
+        juniorDeck: previousCards?.juniorDeck,
+      }));
+
+      setCardSelected(randomCard);
+      setCardsOnTable((previousCards) => [...previousCards, randomCard]);
+      setwaitRound(true);
+
+      setTimeout(() => {
+        handlefinishRound();
+      }, 6000);
+    }
+  }, [decks, handlefinishRound]);
+
+  const handlePlayerSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+      const newSelectedCard = game.players[1].cards.find(
+        (card) => card.name === event.currentTarget.id,
+      );
+
       beep.play();
-      const newSelectedCard = decks[1].find((card) => card.id === event.currentTarget.id);
+
+      if (newSelectedCard) {
+        newSelectedCard.type = 'JUNIOR';
+      }
 
       setCardSelected(newSelectedCard);
     },
-    [decks],
+    [game],
   );
 
-  const handleCurrentSelectedCard = useCallback(
-    (newCardSelected: CardState) => {
-      beep.play();
-      dispatch({ type: newCardSelected.id, id: newCardSelected.playerId });
+  const sendCurrentSelectedCard = useCallback(
+    (newCardSelected: CardProps) => {
+      newCardSelected.isSelected = true;
+      newCardSelected.type = 'JUNIOR';
 
       setCardsOnTable([...cardsOnTable, newCardSelected]);
+      setCardSelected(null);
+
+      const newjuniorDeck = filterUnusedCards(decks?.juniorDeck);
+
+      setDecks((previousCards) => ({
+        bugDeck: previousCards?.bugDeck,
+        juniorDeck: newjuniorDeck,
+      }));
+
+      const updatedGame = updateMove(game?.players?.[1], game.id, newCardSelected.name);
+
+      setGame(updatedGame);
+
+      beep.play();
+
+      setWaitingNewMovement(true);
+
+      setTimeout(() => {
+        handleBugTurn();
+        setWaitingNewMovement(false);
+      }, 5000);
     },
-    [dispatch, cardsOnTable],
+    [cardsOnTable, handleBugTurn, decks, game],
+  );
+
+  const handleSkipMove = useCallback(
+    (playerId?: string) => {
+      updateSkipMove(game.id, playerId);
+      setTimeout(() => {
+        handleBugTurn();
+      }, 5000);
+    },
+    [game.id, handleBugTurn, game.move],
   );
 
   return (
-    <Container>
-      <GameResult />
-      <Players>
-        <AudioPlayer />
+    <>
+      {!loading && (
+        <Container>
+          {waitingNewMovement && <Bubble moveNumber={game.move}>kkkkkkkkkkkk</Bubble>}
 
-        {players.map((player) => (
-          <PlayerStatus
-            id={player.id}
-            key={player.id}
-            imgUrl={player.imgUrl}
-            deck={player.deck}
-            mana={player.mana}
-            health={player.health}
-            playerName={player.playerName}
-          />
-        ))}
-      </Players>
-      <Board>
-        <Deck type="bug">
-          {decks[0].map((card) => (
-            <Card
-              id={card.id}
-              playerId={card.playerId}
-              key={card.id}
-              description={card.description}
-              manaUsagePoints={card.manaUsagePoints}
-              name={card.name}
-              owner="bug"
-              width={120}
-              height={130}
-            />
-          ))}
-        </Deck>
-        <Table>
-          {cardsOnTable.map((card) => (
-            <Card {...card} owner="dev" width={90} height={110} />
-          ))}
-        </Table>
-        <Deck type="dev">
-          {decks[1].map((card) => (
-            <Card
-              id={card.id}
-              playerId={card.playerId}
-              key={card.id}
-              description={card.description}
-              manaUsagePoints={card.manaUsagePoints}
-              name={card.name}
-              owner="dev"
-              width={120}
-              height={130}
-              onClick={handleCardSelect}
-            />
-          ))}
-        </Deck>
-      </Board>
-
-      {cardSelected && (
-        <SelectedCard>
-          <Card {...cardSelected} owner="dev" width={130} height={170} onClick={handleCardSelect} />
-          <span>{cardSelected.description}</span>
-          <button type="button" onClick={() => handleCurrentSelectedCard(cardSelected)}>
-            usar carta
-          </button>
-        </SelectedCard>
+          {game.status === 'finished' && <GameResult winner={game.winner} />}
+          <Players>
+            {game.players.map((player) => (
+              <PlayerStatus
+                id={player.id}
+                key={player.id}
+                imgUrl={player.imgUrl}
+                cards={player.cards}
+                mana={player.mana}
+                life={player.life}
+                type={player.type}
+              />
+            ))}
+            <button
+              type="button"
+              onClick={() => {
+                handleSkipMove(game.players[1].id);
+              }}
+            >
+              passar a vez
+            </button>
+          </Players>
+          <BoardWithDecks>
+            <Deck type={game.players[0].type}>
+              {decks?.bugDeck?.map((card) => (
+                <Card
+                  key={card.name}
+                  description={card.description}
+                  manaPoints={card.manaPoints}
+                  name={card.name}
+                  imgUrl={card.imgUrl}
+                  type={game.players[0].type}
+                  width={120}
+                  height={150}
+                />
+              ))}
+            </Deck>
+            <Table>
+              {cardsOnTable.map((card) => (
+                <Card {...card} type={card.type} width={90} height={110} />
+              ))}
+              {waitRound && <span>Atualizando rodada...</span>}
+            </Table>
+            <Deck type={game.players[1].type}>
+              {decks?.juniorDeck?.map((card) => (
+                <Card
+                  key={card.name}
+                  description={card.description}
+                  manaPoints={card.manaPoints}
+                  name={card.name}
+                  imgUrl={card.imgUrl}
+                  type={game.players[1].type}
+                  width={120}
+                  height={150}
+                  onClick={handlePlayerSelect}
+                />
+              ))}
+            </Deck>
+          </BoardWithDecks>
+          {cardSelected && (
+            <SelectedCard type={cardSelected.type}>
+              <Card
+                {...cardSelected}
+                type={cardSelected.type}
+                width={130}
+                height={170}
+                onClick={handlePlayerSelect}
+              />
+              <span>{cardSelected.description}</span>
+              <button type="button" onClick={() => sendCurrentSelectedCard(cardSelected)}>
+                usar carta
+              </button>
+            </SelectedCard>
+          )}
+        </Container>
       )}
-    </Container>
+    </>
   );
 }
 

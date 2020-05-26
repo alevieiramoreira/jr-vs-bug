@@ -1,46 +1,52 @@
 import styled, { css } from 'styled-components';
 
 interface StatusBarProps {
-  type: 'health' | 'mana';
-  health?: number;
+  barType: 'life' | 'mana';
+  life?: number;
   mana?: number;
+  damaged?: boolean;
 }
 
-const changeHealthColors = (healthPoints: number) => {
-  if (healthPoints >= 15) {
+const changeLifeColors = (lifePoints: number) => {
+  if (lifePoints >= 15) {
     return '#58cf55';
   }
-  if (healthPoints >= 10) {
+  if (lifePoints >= 10) {
     return '#fa9828';
   }
   return '#d60f0f';
 };
 
-export const PlayerStatusContainer = styled.div`
+export const PlayerStatusContainer = styled.section`
+  margin-top: 35px;
   img {
     width: 100px;
     border-radius: 100%;
     border: 3px solid #cb0c59;
+
+    &:active {
+      filter: grayscale(100%);
+    }
   }
 `;
 
-export const StatusBar = styled.span<StatusBarProps>`
-  display: block;
+export const StatusBar = styled.div<StatusBarProps>`
   width: 126px;
   height: 20px;
   border: solid 3px #000;
   margin-top: 10px;
 
-  div {
-    max-width: calc(6 * ${(props) => props.health || props.mana}px);
+  span {
+    display: block;
+    max-width: calc(6 * ${(props) => props.life || props.mana}px);
     height: 14px;
     ${(props) =>
-      props.health &&
+      props.life &&
       css`
-        background-color: ${changeHealthColors(props.health)};
+        background-color: ${changeLifeColors(props.life)};
       `};
     ${(props) =>
-      props.type === 'mana' &&
+      props.barType === 'mana' &&
       css`
         background-color: #55a3cf;
       `};
