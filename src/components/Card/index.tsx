@@ -1,16 +1,22 @@
 import React, { ReactElement } from 'react';
 
-import { Container } from './styles';
+import { CardContainer } from './styles';
+import { CardProps } from '../../@types/types';
 
-interface CardProps {
-  type: 'player' | 'bug';
+export interface CardStyleProps extends Partial<CardProps> {
+  width: number;
+  height: number;
+  onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function Card({ type }: CardProps): ReactElement {
+function Card({ imgUrl, onClick, name, ...rest }: CardStyleProps): ReactElement {
   return (
-    <Container type={type}>
-      <span>iconezinho</span>
-    </Container>
+    <CardContainer {...rest}>
+      <img src={imgUrl} alt={`carta: ${name}`} />
+      <button id={name} type="button" onClick={onClick}>
+        ver detalhes
+      </button>
+    </CardContainer>
   );
 }
 
