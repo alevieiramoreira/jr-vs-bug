@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 
 import { CardContainer } from './styles';
-import { CardProps } from '../../@types/types';
+import { CardProps } from '../../@types/game';
 
 export interface CardStyleProps extends Partial<CardProps> {
   width: number;

@@ -3,7 +3,7 @@ import React, { ReactElement } from 'react';
 import { Container, Console, ProfileInformation, Photo, PlayerInfo } from './styles';
 
 import Button from '../../components/Button';
-import devImg from '../../assets/player.png';
+import devImg from '../../assets/images/player.png';
 
 function Profile(): ReactElement {
   return (

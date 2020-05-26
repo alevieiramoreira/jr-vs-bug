@@ -11,7 +11,7 @@ import { filterUnusedCards, getRandomCard } from '../../utils/gameActions';
 
 import { updateMove, updateRound, updateSkipMove } from '../../services/game';
 
-import { Decks, CardProps, GameProps, MovementData } from '../../@types/types';
+import { Decks, CardProps, GameProps, MovementData } from '../../@types/game';
 import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players, Bubble } from './styles';
 
 const beepMp3 = require('../../assets/music/beep.mp3');
@@ -145,7 +145,7 @@ function Game(): ReactElement {
   );
 
   const handleSkipMove = useCallback(
-    (playerId?: string) => {
+    (playerId?: number) => {
       beep.play();
 
       setMovement({ updateMovement: true, text: 'VOCÊ PASSOU' });

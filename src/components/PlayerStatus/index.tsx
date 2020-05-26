@@ -1,10 +1,10 @@
 import React, { ReactElement, useEffect, useRef } from 'react';
 
-import heartImg from '../../assets/heart.png';
-import manaImg from '../../assets/mana.png';
+import heartImg from '../../assets/images/heart.png';
+import manaImg from '../../assets/images/mana.png';
 
 import { PlayerStatusContainer, StatusBar } from './styles';
-import { PlayerProps } from '../../@types/types';
+import { PlayerProps } from '../../@types/game';
 import { usePreviousValue } from '../../hooks/values';
 
 function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {

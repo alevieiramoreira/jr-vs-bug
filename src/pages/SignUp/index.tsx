@@ -5,14 +5,23 @@ import InputElement from '../../components/Input';
 import Button from '../../components/Button';
 
 import { Container } from './styles';
+
+import { useToast } from '../../hooks/toast';
 import api from '../../services/api';
 
 function SignUp(): ReactElement {
   const [nickName, setNickName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const { addToast } = useToast();
 
   async function register(event: React.FormEvent) {
     event.preventDefault();
+
+    addToast({
+      title: 'aaaaa',
+      description: 'aaaaaaaaaa',
+      type: 'success',
+    });
 
     try {
       await api

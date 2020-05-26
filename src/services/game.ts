@@ -1,4 +1,4 @@
-import { PlayerProps, GameProps, Decks } from '../@types/types';
+import { PlayerProps, GameProps, Decks } from '../@types/game';
 import api from './api';
 
 export const getGameStart = async (): Promise<GameProps> => {
@@ -11,7 +11,7 @@ export const getGameStart = async (): Promise<GameProps> => {
   }
 };
 
-export const updateMove = (player: PlayerProps, idGame: string, cardName: string) => {
+export const updateMove = (player: PlayerProps, idGame: number, cardName: string) => {
   try {
     api
       .post('move', {
@@ -27,7 +27,7 @@ export const updateMove = (player: PlayerProps, idGame: string, cardName: string
   }
 
   const fakeResponse: GameProps = {
-    id: '1',
+    id: 1,
     move: 2,
     status: 'running',
     winner: null,
@@ -69,7 +69,7 @@ export const updateMove = (player: PlayerProps, idGame: string, cardName: string
         ],
       },
       {
-        id: '1',
+        id: 1,
         life: 20,
         mana: 15,
         type: 'JUNIOR',
@@ -112,7 +112,7 @@ export const updateMove = (player: PlayerProps, idGame: string, cardName: string
   return fakeResponse;
 };
 
-export function updateSkipMove(idGame: string, playerId?: string) {
+export function updateSkipMove(idGame: number, playerId?: number) {
   try {
     return api.post('skipround', { player: playerId, idGame });
   } catch (error) {
@@ -128,7 +128,7 @@ export function updateRound(decks?: Decks) {
   }
 
   const fakeResponse: GameProps = {
-    id: '1',
+    id: 1,
     move: 3,
     status: 'running',
     winner: null,
@@ -170,7 +170,7 @@ export function updateRound(decks?: Decks) {
         ],
       },
       {
-        id: '1',
+        id: 1,
         life: 20,
         mana: 20,
         type: 'JUNIOR',
