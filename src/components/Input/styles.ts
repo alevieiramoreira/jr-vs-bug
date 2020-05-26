@@ -23,5 +23,5 @@ export const InputElement = styled.input<Props>`
   color: #dcd5c6;
   font-style: normal;
   font-weight: normal;
-  font-size: 25px;
+  font-size: 20px;
 `;

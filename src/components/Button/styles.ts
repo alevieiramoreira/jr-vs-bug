@@ -8,6 +8,7 @@ interface ButtonProps {
 export const ButtonContainer = styled.button<ButtonProps>`
   background-color: #fac60e;
   text-align: center;
+  font-size: 25px;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
 `;

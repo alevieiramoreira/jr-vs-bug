@@ -17,7 +17,7 @@ interface RouteProps extends ReactRouterProps {
 
 const Route: React.FC<RouteProps> = ({ isPrivate = false, component: Component, ...rest }) => {
   const { userId } = useAuth();
-  console.log(userId);
+
   return (
     <ReactDOMRoute
       {...rest}
