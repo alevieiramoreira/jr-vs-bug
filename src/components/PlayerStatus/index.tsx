@@ -1,13 +1,13 @@
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import heartImg from '../../assets/heart.png';
-import manaImg from '../../assets/mana.png';
+import heartImg from '../../assets/images/heart.png';
+import manaImg from '../../assets/images/mana.png';
 
 import { PlayerStatusContainer, StatusBar } from './styles';
-import { PlayerProps } from '../../@types/types';
+import { PlayerProps } from '../../@types/game';
 import { usePreviousValue } from '../../hooks/values';
 
-function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
+const PlayerStatus: React.FC<PlayerProps> = ({ imageUrl, life, mana, type }) => {
   const lifeBar = useRef<HTMLDivElement>(null);
   const manaBar = useRef<HTMLDivElement>(null);
   const previousLife = usePreviousValue<number>(life);
@@ -51,7 +51,7 @@ function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
 
   return (
     <PlayerStatusContainer>
-      <img src={imgUrl} alt={`avatar do ${type}`} />
+      <img src={imageUrl} alt={`avatar do ${type}`} />
 
       <StatusBar ref={lifeBar} barType="life" life={life}>
         <span>
@@ -66,6 +66,6 @@ function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
       </StatusBar>
     </PlayerStatusContainer>
   );
-}
+};
 
 export default PlayerStatus;

@@ -112,6 +112,20 @@ export const SelectedCard = styled.div<DeckProps>`
   span {
     display: block;
     max-width: 120px;
+    text-align: center;
+  }
+
+  p {
+    margin-top: 15px;
+
+    em {
+      display: block;
+      margin: 3px;
+
+      strong {
+        margin: 2px;
+      }
+    }
   }
 
   button {

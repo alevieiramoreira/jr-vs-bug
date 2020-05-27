@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 interface BoxMessageProps {
-  winner: 'bug' | 'junior' | null;
+  winner: 'BUG' | 'JUNIOR' | null;
 }
 
 export const ResultContainer = styled.section`
@@ -34,12 +34,12 @@ export const BoxMessage = styled.section<BoxMessageProps>`
 
     50% {
       ${(props) =>
-        props.winner === 'junior' &&
+        props.winner === 'JUNIOR' &&
         css`
           border-color: green;
         `}
       ${(props) =>
-        props.winner === 'bug' &&
+        props.winner === 'BUG' &&
         css`
           border-color: red;
         `}
@@ -55,5 +55,20 @@ export const BoxMessage = styled.section<BoxMessageProps>`
 
   span {
     font-size: 30px;
+  }
+
+  a {
+    margin-top: 50px;
+    align-self: center;
+    font-size: 25px;
+    width: 115px;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #fac60e;
+
+    &:hover {
+      filter: brightness(80%);
+    }
   }
 `;

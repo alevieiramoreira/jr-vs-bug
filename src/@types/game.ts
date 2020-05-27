@@ -1,19 +1,19 @@
 export interface GameProps {
-  id: string;
+  id: number;
   move: number;
-  status: 'running' | 'finished';
-  winner: 'bug' | 'junior' | null;
+  status: 'RUNNING' | 'FINISHED';
+  winner: 'BUG' | 'JUNIOR' | null;
   players: PlayerProps[];
 }
 
 export interface PlayerProps {
-  id?: string;
+  id?: number;
   nickname?: string;
   life: number;
   mana: number;
   type: 'JUNIOR' | 'BUG';
-  imgUrl: string;
-  cards: CardProps[];
+  imageUrl: string;
+  hand: CardProps[];
 }
 
 export interface CardProps {
@@ -22,16 +22,24 @@ export interface CardProps {
   manaPoints: number;
   description: string;
   type?: 'JUNIOR' | 'BUG';
+  juniorManaPoints?: number;
   imgUrl: string;
   isSelected?: boolean;
 }
 
 export interface Decks {
-  juniorDeck?: CardProps[];
-  bugDeck?: CardProps[];
+  juniorHand?: CardProps[];
+  bugHand?: CardProps[];
 }
 
 export interface MovementData {
   updateMovement: boolean;
   text: string;
+}
+
+export interface PlayerData {
+  id: number;
+  name: string;
+  wins: number;
+  losses: number;
 }

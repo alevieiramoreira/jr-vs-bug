@@ -47,8 +47,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.remove('@JrVsBug:token');
-    localStorage.remove('@JrVsBug:id');
+    localStorage.removeItem('@JrVsBug:token');
+    localStorage.removeItem('@JrVsBug:id');
 
     setData({} as AuthState);
   }, []);
