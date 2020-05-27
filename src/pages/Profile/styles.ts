@@ -66,8 +66,10 @@ export const PlayerInfo = styled.div`
 
 export const Icon = styled.div`
   display: flex;
+
   img {
     height: 30px;
+    margin: 0 10px;
   }
 
   b {

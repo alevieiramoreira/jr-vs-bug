@@ -123,11 +123,11 @@ function Game(): ReactElement {
       setCardSelected(null);
 
       const newjuniorHand = filterUnusedCards(decks?.juniorHand);
+      console.log('mão do junior filtrada', newjuniorHand);
 
-      setDecks((previousCards) => ({
-        bugHand: previousCards?.bugHand,
-        juniorHand: newjuniorHand,
-      }));
+      setDecks({ ...decks, juniorHand: newjuniorHand });
+
+      console.log('depois do filtro do junior', decks);
 
       await updateMove(game?.players?.[1], newCardSelected.name).then((response) => {
         setGame(response);

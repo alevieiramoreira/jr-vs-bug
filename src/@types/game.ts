@@ -39,7 +39,7 @@ export interface MovementData {
 
 export interface PlayerData {
   id: number;
-  nickName: string;
+  name: string;
   wins: number;
   losses: number;
 }

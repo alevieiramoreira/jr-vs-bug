@@ -53,11 +53,11 @@ function Profile(): ReactElement {
               <img src={skull} alt="Troféu em pixel art" />
               <span>
                 {playerData?.losses}
-                <b>20 X</b>
+                <b>X</b>
               </span>
             </Icon>
           </IconsResult>
-          <div>aaaaaa</div>
+          <div>{playerData?.name}</div>
         </PlayerInfo>
       </ProfileInformation>
       <button type="button" onClick={() => signOut()}>
