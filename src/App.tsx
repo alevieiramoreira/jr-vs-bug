@@ -1,26 +1,18 @@
 import React, { ReactElement } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import GlobalStyle from './styles/global';
 
-import SignUp from './pages/SignUp';
-import Login from './pages/Login';
-import Game from './pages/Game';
-import Profile from './pages/Profile';
-import { AuthProvider } from './hooks/authentication';
+import Routes from './routes';
+import AppProvider from './hooks';
 
 function App(): ReactElement {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/cadastro" component={SignUp} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/game" component={Game} />
-        </Switch>
+      <AppProvider>
+        <Routes />
         <GlobalStyle />
-      </AuthProvider>
+      </AppProvider>
     </BrowserRouter>
   );
 }

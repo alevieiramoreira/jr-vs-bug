@@ -1,21 +1,21 @@
-import React, { ReactElement, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import heartImg from '../../assets/heart.png';
-import manaImg from '../../assets/mana.png';
+import heartImg from '../../assets/images/heart.png';
+import manaImg from '../../assets/images/mana.png';
 
 import { PlayerStatusContainer, StatusBar } from './styles';
-import { PlayerProps } from '../../@types/types';
+import { PlayerProps } from '../../@types/game';
 import { usePreviousValue } from '../../hooks/values';
 
-function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
+const PlayerStatus: React.FC<PlayerProps> = ({ imgUrl, life, mana, type }) => {
   const lifeBar = useRef<HTMLDivElement>(null);
   const manaBar = useRef<HTMLDivElement>(null);
   const previousLife = usePreviousValue<number>(life);
   const previousMana = usePreviousValue<number>(mana);
 
   useEffect(() => {
-    if (!!previousLife && previousLife > life) {
-      if (lifeBar.current) {
+    if (lifeBar.current) {
+      if (!!previousLife && previousLife > life) {
         lifeBar.current.animate(
           [
             // keyframes
@@ -29,10 +29,10 @@ function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
           },
         );
       }
-    } // isso aqui funciona, consigo pegar a subtração da vida e mana.
+    }
 
-    if (!!previousMana && previousMana !== mana) {
-      if (manaBar.current) {
+    if (manaBar.current) {
+      if (!!previousMana && previousMana > mana) {
         manaBar.current.animate(
           [
             // keyframes
@@ -66,6 +66,6 @@ function PlayerStatus({ imgUrl, life, mana, type }: PlayerProps): ReactElement {
       </StatusBar>
     </PlayerStatusContainer>
   );
-}
+};
 
 export default PlayerStatus;

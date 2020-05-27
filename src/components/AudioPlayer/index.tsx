@@ -8,7 +8,7 @@ interface AudioPlayerProps extends HTMLAudioElement {
   audioName?: string;
 }
 
-function AudioPlayer(): ReactElement {
+const AudioPlayer: React.FC = () => {
   return (
     <AudioPlayerContainer>
       <audio src={musicTheme} autoPlay loop controls>
@@ -16,6 +16,6 @@ function AudioPlayer(): ReactElement {
       </audio>
     </AudioPlayerContainer>
   );
-}
+};
 
 export default AudioPlayer;
