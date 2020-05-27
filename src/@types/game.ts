@@ -2,7 +2,7 @@ export interface GameProps {
   id: number;
   move: number;
   status: 'RUNNING' | 'FINISHED';
-  winner: 'bug' | 'junior' | null;
+  winner: 'BUG' | 'JUNIOR' | null;
   players: PlayerProps[];
 }
 

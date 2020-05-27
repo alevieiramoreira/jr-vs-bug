@@ -50,6 +50,7 @@ function Game(): ReactElement {
   }, []);
 
   const handlefinishRound = useCallback(async () => {
+    console.log(decks);
     await updateRound(decks).then((response) => {
       setwaitRound(false);
       console.log(response);
