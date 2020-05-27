@@ -50,11 +50,16 @@ function Game(): ReactElement {
   }, []);
 
   const handlefinishRound = useCallback(async () => {
-    console.log(decks);
-    await updateRound(decks).then((response) => {
+    const updatedDecks = {
+      bugHand: filterUnusedCards(decks?.bugHand),
+      juniorHand: filterUnusedCards(decks?.juniorHand),
+    };
+
+    await updateRound(updatedDecks).then((response) => {
       setwaitRound(false);
-      console.log(response);
+
       setGame(response);
+      console.log('updated', response);
 
       setDecks({
         bugHand: response.players[0].hand,
@@ -78,6 +83,10 @@ function Game(): ReactElement {
 
       setDecks({ ...decks, bugHand: newbugHand });
 
+      updateMove(game?.players?.[0], randomCard.name).then((response) => {
+        setGame(response);
+      });
+
       setCardSelected(randomCard);
       setCardsOnTable((previousCards) => [...previousCards, randomCard]);
 
@@ -91,7 +100,7 @@ function Game(): ReactElement {
         handlefinishRound();
       }, 7000);
     }
-  }, [decks, handlefinishRound]);
+  }, [decks, handlefinishRound, game]);
 
   const handlePlayerSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -115,20 +124,18 @@ function Game(): ReactElement {
       newCardSelected.isSelected = true;
       newCardSelected.type = 'JUNIOR';
 
-      setMovement({ updateMovement: true, text: 'VEZ DO BUG!' });
       setCardsOnTable([...cardsOnTable, newCardSelected]);
       setCardSelected(null);
 
       const newjuniorHand = filterUnusedCards(decks?.juniorHand);
-      console.log('mão do junior filtrada', newjuniorHand);
 
       setDecks({ ...decks, juniorHand: newjuniorHand });
-
-      console.log('depois do filtro do junior', decks);
 
       await updateMove(game?.players?.[1], newCardSelected.name).then((response) => {
         setGame(response);
       });
+
+      setMovement({ updateMovement: true, text: 'VEZ DO BUG!' });
 
       beep.play();
 
