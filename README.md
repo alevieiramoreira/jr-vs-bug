@@ -8,7 +8,7 @@ Um simples game maneirinho de cartas por turno, com layout baseado em games 8 bi
 
 A premissa do game é que você é um desenvolvedor júnior e deu de cara com um bug. Como derrotá-lo? Escrevendo testes? Boas práticas? Chamar o Tech Lead pra dar aquele help? (☞ﾟヮﾟ)☞
 
-Você pode se cadastrar como um player e só jogar!
+Você pode se cadastrar como um player e daí é só jogar!
 
 <div style="display: flex; align-items: center">
 <img src="./src/assets/images/Screenshot1.png" height="240px" width="450px" style="margin-right: 10px">
