@@ -12,7 +12,7 @@ Você pode se cadastrar como um player e só jogar!
 
 <div style="display: flex; align-items: center">
 <img src="./src/assets/images/Screenshot1.png" height="240px" width="450px" style="margin-right: 10px">
-<img src="./src/assets/Screenshot2.png"
+<img src="./src/assets/images/Screenshot2.png"
 height="240px" width="450px">
 </div>
 
