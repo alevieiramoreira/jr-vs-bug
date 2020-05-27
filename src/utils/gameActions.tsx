@@ -1,4 +1,4 @@
-import { CardProps } from '../@types/types';
+import { CardProps } from '../@types/game';
 
 export function filterUnusedCards(deck?: CardProps[]) {
   return deck?.filter((card) => !card.isSelected);

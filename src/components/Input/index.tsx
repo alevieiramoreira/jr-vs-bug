@@ -1,16 +1,16 @@
-import React, { ReactElement, InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import { InputElement } from './styles';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
   width: number;
   height: number;
 }
 
-function Input({ placeholder, width, height, value, ...rest }: Props): ReactElement {
+const Input: React.FC<InputProps> = ({ placeholder, width, height, value, ...rest }) => {
   return (
     <InputElement placeholder={placeholder} width={width} height={height} value={value} {...rest} />
   );
-}
+};
 
 export default Input;

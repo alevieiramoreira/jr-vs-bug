@@ -1,5 +1,5 @@
 export interface GameProps {
-  id: string;
+  id: number;
   move: number;
   status: 'running' | 'finished';
   winner: 'bug' | 'junior' | null;
@@ -7,7 +7,7 @@ export interface GameProps {
 }
 
 export interface PlayerProps {
-  id?: string;
+  id?: number;
   nickname?: string;
   life: number;
   mana: number;
@@ -22,6 +22,7 @@ export interface CardProps {
   manaPoints: number;
   description: string;
   type?: 'JUNIOR' | 'BUG';
+  juniorManaPoints?: number;
   imgUrl: string;
   isSelected?: boolean;
 }
@@ -34,4 +35,11 @@ export interface Decks {
 export interface MovementData {
   updateMovement: boolean;
   text: string;
+}
+
+interface PlayerData {
+  id: number;
+  nickName: string;
+  wins: number;
+  losses: number;
 }

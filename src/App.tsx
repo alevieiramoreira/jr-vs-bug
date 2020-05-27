@@ -3,17 +3,16 @@ import { BrowserRouter } from 'react-router-dom';
 
 import GlobalStyle from './styles/global';
 
-import { AuthProvider } from './hooks/authentication';
-
 import Routes from './routes';
+import AppProvider from './hooks';
 
 function App(): ReactElement {
   return (
     <BrowserRouter>
-      <AuthProvider>
+      <AppProvider>
         <Routes />
         <GlobalStyle />
-      </AuthProvider>
+      </AppProvider>
     </BrowserRouter>
   );
 }
