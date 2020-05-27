@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { Link } from 'react-router-dom';
+import * as yup from 'yup';
 
 import InputElement from '../../components/Input';
 import Button from '../../components/Button';
@@ -15,6 +16,13 @@ function SignUp(): ReactElement {
     event.preventDefault();
 
     try {
+      const validationInput = yup.object().shape({
+        nickName: yup.string().required('informe seu nickname').min(3, 'minimo 3 caracteres'),
+        password: yup.string().required('informe sua senha'),
+      });
+
+      await validationInput.validate({ nickName, password }, { abortEarly: false });
+
       await api
         .post('user', {
           nickName: nickName,
@@ -40,9 +48,9 @@ function SignUp(): ReactElement {
           <InputElement
             type="password"
             placeholder="Password"
+            onChange={(event) => setPassword(event.target.value)}
             width={349}
             height={51}
-            onChange={(event) => setPassword(event.target.value)}
           />
           <Button type="submit" name="Cadastrar" width={349} height={51} />
           <Link to="/login"> Já possuo cadastro</Link>
