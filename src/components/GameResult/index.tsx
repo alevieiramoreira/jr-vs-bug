@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
 import { ResultContainer, BoxMessage } from './styles';
 
 interface GameResultProps {
-  winner: 'bug' | 'junior' | null;
+  winner: 'BUG' | 'JUNIOR' | null;
 }
 
 const GameResult: React.FC<GameResultProps> = ({ winner }) => {
   const [message, setMessage] = useState({ title: '', text: '' });
 
   useEffect(() => {
-    if (winner === 'junior') {
+    if (winner === 'JUNIOR') {
       setMessage({
         title: 'Você venceu!',
         text: 'você derrotou o bug com um código limpo e escalável :D',
@@ -28,6 +29,7 @@ const GameResult: React.FC<GameResultProps> = ({ winner }) => {
       <BoxMessage winner={winner}>
         <h1>{message.title}</h1>
         <span>{message.text}</span>
+        <Link to="/profile">Voltar</Link>
       </BoxMessage>
     </ResultContainer>
   );

@@ -30,7 +30,6 @@ const ToastProvider: React.FC = ({ children }) => {
       description,
     };
 
-    // recebe por parametro os valores antigos
     setMessages((oldMessages) => [...oldMessages, toast]);
   }, []);
   const removeToast = useCallback((id: string) => {

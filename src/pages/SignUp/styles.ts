@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  padding: 50px;
   display: flex;
   justify-content: space-around;
   width: 100%;
@@ -31,15 +30,14 @@ export const Container = styled.div`
   input {
     margin-bottom: 25px;
   }
+
   div {
     display: flex;
-    width: 400px;
-    height: 760px;
     align-items: center;
+    justify-content: center;
 
     img {
-      width: 400px;
-      height: 250px;
+      width: 600px;
     }
   }
 `;

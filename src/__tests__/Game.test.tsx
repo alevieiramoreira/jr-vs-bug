@@ -1,11 +1,23 @@
 import React from 'react';
+import { render, waitFor } from '@testing-library/react';
+import MockAdapter from 'axios-mock-adapter';
 
-// TEST CASES
+import api from '../services/api';
 
-// Renderizar carta na table
+import Game from '../pages/Game';
 
-// Renderizar carta na lateral
+const apiMock = new MockAdapter(api);
 
-// Sofrer alteração nos valores de vida/mana
+it('should be able to load the game', async () => {
+  await apiMock.onGet('game').reply(200);
+});
 
-// Testes de chamada api
+it('should be able to display the players', async () => {
+  const { getByTestId } = render(<Game />);
+
+  await waitFor(() => expect(apiMock.onGet('game')).toBeCalled());
+
+  expect(getByTestId('player-bug')).toBeTruthy();
+
+  expect(getByTestId('player-junior')).toBeTruthy();
+});

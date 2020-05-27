@@ -1,46 +1,52 @@
 import React, { ReactElement, useState } from 'react';
-import { Link } from 'react-router-dom';
-import * as yup from 'yup';
+import { Link, useHistory } from 'react-router-dom';
+import * as Yup from 'yup';
 
 import InputElement from '../../components/Input';
 import Button from '../../components/Button';
 
 import { Container } from './styles';
+import { useToast } from '../../hooks/toast';
+
 import api from '../../services/api';
 import computerImage from '../../assets/images/compiuter.gif';
-import { useToast } from '../../hooks/toast';
 
 function SignUp(): ReactElement {
   const [nickName, setNickName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { addToast } = useToast();
+  const history = useHistory();
 
   async function register(event: React.FormEvent) {
     event.preventDefault();
 
     try {
-      const validationInput = yup.object().shape({
-        nickName: yup.string().required('Por favor preencha seu nickname'),
-        password: yup.string().required('Por favor preencha sua senha'),
+      const validationInput = Yup.object().shape({
+        nickName: Yup.string().required('Por favor preencha seu nickname'),
+        password: Yup.string().required('Por favor preencha sua senha'),
       });
 
       await validationInput.validate({ nickName, password }, { abortEarly: false });
 
       await api.post('user', {
-        nickName: nickName,
-        password: password,
+        nickName,
+        password,
       });
       addToast({
         type: 'success',
         title: 'Cadastro realizado com sucesso!',
         description: 'Você já pode fazer seu logon na aplicação',
       });
+
+      setTimeout(() => {
+        history.push('/login');
+      }, 1500);
     } catch (error) {
-      if (error instanceof yup.ValidationError) {
+      if (error instanceof Yup.ValidationError) {
         console.log(error);
-        error.errors.map((error) =>
+        error.errors.map((err) =>
           addToast({
-            title: error,
+            title: err,
             type: 'error',
           }),
         );
@@ -55,7 +61,7 @@ function SignUp(): ReactElement {
   return (
     <Container>
       <form onSubmit={register}>
-        <h1>Logo/Title</h1>
+        <h1>Torne-se um player!</h1>
         <InputElement
           type="text"
           placeholder="Nickname"

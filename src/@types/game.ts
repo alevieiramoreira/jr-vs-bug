@@ -1,8 +1,8 @@
 export interface GameProps {
   id: number;
   move: number;
-  status: 'running' | 'finished';
-  winner: 'bug' | 'junior' | null;
+  status: 'RUNNING' | 'FINISHED';
+  winner: 'BUG' | 'JUNIOR' | null;
   players: PlayerProps[];
 }
 
@@ -12,8 +12,8 @@ export interface PlayerProps {
   life: number;
   mana: number;
   type: 'JUNIOR' | 'BUG';
-  imgUrl: string;
-  cards: CardProps[];
+  imageUrl: string;
+  hand: CardProps[];
 }
 
 export interface CardProps {
@@ -28,8 +28,8 @@ export interface CardProps {
 }
 
 export interface Decks {
-  juniorDeck?: CardProps[];
-  bugDeck?: CardProps[];
+  juniorHand?: CardProps[];
+  bugHand?: CardProps[];
 }
 
 export interface MovementData {
@@ -37,9 +37,9 @@ export interface MovementData {
   text: string;
 }
 
-interface PlayerData {
+export interface PlayerData {
   id: number;
-  nickName: string;
+  name: string;
   wins: number;
   losses: number;
 }
