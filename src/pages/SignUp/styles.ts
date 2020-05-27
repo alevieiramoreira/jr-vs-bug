@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  justify-content: center;
-  width: 700px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 
   h1 {
     margin-bottom: 25px;
@@ -28,5 +29,15 @@ export const Container = styled.div`
 
   input {
     margin-bottom: 25px;
+  }
+
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 600px;
+    }
   }
 `;

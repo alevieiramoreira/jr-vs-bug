@@ -1,7 +1,8 @@
 import React from 'react';
-import { Router } from 'react-router-dom';
-import { render, fireEvent, act } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
+
+import { Router } from 'react-router-dom';
+import { render, fireEvent } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 
 import api from '../services/api';
@@ -37,15 +38,3 @@ it('should be able to navigate to the profile page', () => {
 
   expect(window.location.pathname).toEqual('/profile');
 });
-
-// it('should be return an error on submit with empty forms', async () => {
-//   const { getByText } = render(
-//     <BrowserRouter>
-//       <Login />
-//     </BrowserRouter>,
-//   );
-
-//   await fireEvent.click(getByText('Login'));
-
-//   expect();
-// });

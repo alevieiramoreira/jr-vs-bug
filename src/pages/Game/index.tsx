@@ -39,8 +39,8 @@ function Game(): ReactElement {
         console.log(response.data);
 
         setDecks({
-          bugDeck: response.data.players[0].hand,
-          juniorDeck: response.data.players[1].hand,
+          bugHand: response.data.players[0].hand,
+          juniorHand: response.data.players[1].hand,
         });
       });
 
@@ -49,18 +49,16 @@ function Game(): ReactElement {
     getGameStart();
   }, []);
 
-  const handlefinishRound = useCallback(() => {
-    const updatedGame = updateRound(decks);
-    // .then((response) => {
-    //   // setGame(response.data)
-    // });
+  const handlefinishRound = useCallback(async () => {
+    await updateRound(decks).then((response) => {
+      setwaitRound(false);
+      console.log(response);
+      setGame(response);
 
-    setwaitRound(false);
-    setGame(updatedGame);
-
-    setDecks({
-      bugDeck: updatedGame.players[0].hand,
-      juniorDeck: updatedGame.players[1].hand,
+      setDecks({
+        bugHand: response.players[0].hand,
+        juniorHand: response.players[1].hand,
+      });
     });
 
     setCardsOnTable([]);
@@ -69,17 +67,17 @@ function Game(): ReactElement {
   }, [decks]);
 
   const handleBugTurn = useCallback(() => {
-    const randomCard = getRandomCard(decks?.bugDeck);
+    const randomCard = getRandomCard(decks?.bugHand);
 
     if (randomCard) {
       randomCard.isSelected = true;
       randomCard.type = 'BUG';
 
-      const newbugDeck = filterUnusedCards(decks?.bugDeck);
+      const newbugHand = filterUnusedCards(decks?.bugHand);
 
       setDecks((previousCards) => ({
-        bugDeck: newbugDeck,
-        juniorDeck: previousCards?.juniorDeck,
+        bugHand: newbugHand,
+        juniorHand: previousCards?.juniorHand,
       }));
 
       setCardSelected(randomCard);
@@ -115,7 +113,7 @@ function Game(): ReactElement {
   );
 
   const sendCurrentSelectedCard = useCallback(
-    (newCardSelected: CardProps) => {
+    async (newCardSelected: CardProps) => {
       newCardSelected.isSelected = true;
       newCardSelected.type = 'JUNIOR';
 
@@ -123,18 +121,16 @@ function Game(): ReactElement {
       setCardsOnTable([...cardsOnTable, newCardSelected]);
       setCardSelected(null);
 
-      const newjuniorDeck = filterUnusedCards(decks?.juniorDeck);
+      const newjuniorHand = filterUnusedCards(decks?.juniorHand);
 
       setDecks((previousCards) => ({
-        bugDeck: previousCards?.bugDeck,
-        juniorDeck: newjuniorDeck,
+        bugHand: previousCards?.bugHand,
+        juniorHand: newjuniorHand,
       }));
 
-      const updatedGame = updateMove(game?.players?.[1], game.id, newCardSelected.name);
-      // .then((response) => {
-      //   // setGame(response.data)
-      // });
-      setGame(updatedGame);
+      await updateMove(game?.players?.[1], newCardSelected.name).then((response) => {
+        setGame(response);
+      });
 
       beep.play();
 
@@ -146,16 +142,16 @@ function Game(): ReactElement {
   );
 
   const handleSkipMove = useCallback(
-    (playerId?: number) => {
+    async (playerId?: number) => {
       beep.play();
 
       setMovement({ updateMovement: true, text: 'VOCÊ PASSOU' });
 
-      updateSkipMove(game.id, playerId).then((response) => {
-        // setGame(response.data)
-      });
+      await updateSkipMove(game.id, playerId).then((response) => {
+        setGame(response);
 
-      // dizer q é a vez do bug depois da response
+        setMovement({ updateMovement: true, text: 'VEZ DO BUG' });
+      });
 
       setTimeout(() => {
         handleBugTurn();
@@ -171,14 +167,14 @@ function Game(): ReactElement {
         <Container>
           {movement.updateMovement && <Bubble moveNumber={game.move}>{movement.text}</Bubble>}
 
-          {game.status === 'finished' && <GameResult winner={game.winner} />}
+          {game.status === 'FINISHED' && <GameResult winner={game.winner} />}
 
           <Players>
             {game.players.map((player) => (
               <PlayerStatus
                 id={player.id}
                 key={player.id}
-                imgUrl={player.imgUrl}
+                imageUrl={player.imageUrl}
                 hand={player.hand}
                 mana={player.mana}
                 life={player.life}
@@ -197,7 +193,7 @@ function Game(): ReactElement {
           </Players>
           <BoardWithDecks>
             <Deck type={game.players[0].type}>
-              {decks?.bugDeck?.map((card) => (
+              {decks?.bugHand?.map((card) => (
                 <Card
                   key={card.name}
                   description={card.description}
@@ -217,7 +213,7 @@ function Game(): ReactElement {
               {waitRound && <span>Atualizando rodada! Embaralhando cartas...</span>}
             </Table>
             <Deck type={game.players[1].type}>
-              {decks?.juniorDeck?.map((card) => (
+              {decks?.juniorHand?.map((card) => (
                 <Card
                   key={card.name}
                   description={card.description}

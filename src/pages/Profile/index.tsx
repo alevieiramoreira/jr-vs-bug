@@ -17,12 +17,12 @@ import ConsoleScreen from '../../components/ConsoleScreen';
 function Profile(): ReactElement {
   const [playerData, setPlayerData] = useState<PlayerData>();
   const { addToast } = useToast();
-  const { signOut } = useAuth();
+  const { signOut, userId } = useAuth();
 
   useEffect(() => {
     async function getPlayerData() {
       try {
-        await api.get('/profile').then((response) => setPlayerData(response.data));
+        await api.get(`user/${userId}`).then((response) => setPlayerData(response.data));
       } catch (error) {
         addToast({
           title: 'Erro ao carregar os dados',
@@ -32,7 +32,7 @@ function Profile(): ReactElement {
       }
     }
     getPlayerData();
-  }, [addToast]);
+  }, [addToast, userId]);
 
   return (
     <Container>
@@ -63,7 +63,7 @@ function Profile(): ReactElement {
       <button type="button" onClick={() => signOut()}>
         logout
       </button>
-      <ConsoleScreen> Textinho de terminal</ConsoleScreen>
+      <ConsoleScreen />
       <Link to="/game">Jogar!</Link>
     </Container>
   );

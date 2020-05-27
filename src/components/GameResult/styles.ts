@@ -56,4 +56,19 @@ export const BoxMessage = styled.section<BoxMessageProps>`
   span {
     font-size: 30px;
   }
+
+  a {
+    margin-top: 50px;
+    align-self: center;
+    font-size: 25px;
+    width: 115px;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #fac60e;
+
+    &:hover {
+      filter: brightness(80%);
+    }
+  }
 `;
