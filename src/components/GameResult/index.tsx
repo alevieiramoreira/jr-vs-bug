@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { ResultContainer, BoxMessage } from './styles';
 
@@ -6,7 +6,7 @@ interface GameResultProps {
   winner: 'bug' | 'junior' | null;
 }
 
-function GameResult({ winner }: GameResultProps): ReactElement {
+const GameResult: React.FC<GameResultProps> = ({ winner }) => {
   const [message, setMessage] = useState({ title: '', text: '' });
 
   useEffect(() => {
@@ -31,6 +31,6 @@ function GameResult({ winner }: GameResultProps): ReactElement {
       </BoxMessage>
     </ResultContainer>
   );
-}
+};
 
 export default GameResult;

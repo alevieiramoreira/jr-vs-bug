@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import { CardContainer } from './styles';
 import { CardProps } from '../../@types/game';
@@ -9,7 +9,7 @@ export interface CardStyleProps extends Partial<CardProps> {
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-function Card({ imgUrl, onClick, name, ...rest }: CardStyleProps): ReactElement {
+const Card: React.FC<CardStyleProps> = ({ imgUrl, onClick, name, ...rest }) => {
   return (
     <CardContainer {...rest}>
       <img src={imgUrl} alt={`carta: ${name}`} />
@@ -18,6 +18,6 @@ function Card({ imgUrl, onClick, name, ...rest }: CardStyleProps): ReactElement 
       </button>
     </CardContainer>
   );
-}
+};
 
 export default Card;
