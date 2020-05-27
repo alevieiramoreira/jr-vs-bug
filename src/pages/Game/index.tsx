@@ -36,7 +36,6 @@ function Game(): ReactElement {
 
       await api.get('game').then((response) => {
         setGame(response.data);
-        console.log(response.data);
 
         setDecks({
           bugHand: response.data.players[0].hand,
@@ -59,7 +58,6 @@ function Game(): ReactElement {
       setwaitRound(false);
 
       setGame(response);
-      console.log('updated', response);
 
       setDecks({
         bugHand: response.players[0].hand,
@@ -72,7 +70,7 @@ function Game(): ReactElement {
     setMovement({ updateMovement: true, text: 'SUA VEZ DE JOGAR!' });
   }, [decks]);
 
-  const handleBugTurn = useCallback(() => {
+  const handleBugTurn = useCallback(async () => {
     const randomCard = getRandomCard(decks?.bugHand);
 
     if (randomCard) {
@@ -83,7 +81,7 @@ function Game(): ReactElement {
 
       setDecks({ ...decks, bugHand: newbugHand });
 
-      updateMove(game?.players?.[0], randomCard.name).then((response) => {
+      await updateMove(game?.players?.[0], randomCard.name).then((response) => {
         setGame(response);
       });
 
@@ -132,6 +130,7 @@ function Game(): ReactElement {
       setDecks({ ...decks, juniorHand: newjuniorHand });
 
       await updateMove(game?.players?.[1], newCardSelected.name).then((response) => {
+        console.log('response move do jr', response);
         setGame(response);
       });
 
