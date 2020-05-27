@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import { Link } from 'react-router-dom';
 import { ResultContainer, BoxMessage } from './styles';
 
 interface GameResultProps {
@@ -28,6 +29,7 @@ const GameResult: React.FC<GameResultProps> = ({ winner }) => {
       <BoxMessage winner={winner}>
         <h1>{message.title}</h1>
         <span>{message.text}</span>
+        <Link to="/profile">Voltar</Link>
       </BoxMessage>
     </ResultContainer>
   );

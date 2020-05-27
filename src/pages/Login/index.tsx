@@ -1,15 +1,17 @@
 import React, { ReactElement, useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import InputElement from '../../components/Input';
 import Button from '../../components/Button';
 
 import { Container } from './styles';
 import { useAuth } from '../../hooks/authentication';
+import { useToast } from '../../hooks/toast';
 
 function Login(): ReactElement {
   const [nickName, setNickName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const history = useHistory();
 
   const { signIn } = useAuth();
 
@@ -22,6 +24,8 @@ function Login(): ReactElement {
           nickName,
           password,
         }).then((response) => console.log(response));
+
+        history.push('/profile');
       } catch (error) {
         console.log(error);
       }
@@ -32,10 +36,11 @@ function Login(): ReactElement {
   return (
     <Container>
       <div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} data-testid="form-submit">
           <h1>Logo/Title</h1>
           <InputElement
             type="text"
+            data-testid="nickname-input"
             placeholder="Nickname"
             onChange={(event) => setNickName(event.target.value)}
             width={349}
@@ -43,6 +48,7 @@ function Login(): ReactElement {
           />
           <InputElement
             type="password"
+            data-testid="password-input"
             placeholder="Password"
             width={349}
             height={51}

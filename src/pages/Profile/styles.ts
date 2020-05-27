@@ -8,23 +8,28 @@ export const Container = styled.div`
   padding-top: 20px;
   flex-direction: column;
 
-  button {
+  a {
     margin-top: 50px;
     align-self: center;
     font-size: 25px;
+    width: 115px;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+    background-color: #fac60e;
+
+    &:hover {
+      filter: brightness(80%);
+    }
   }
-`;
-export const Console = styled.div`
-  width: 550px;
-  height: 300px;
-  display: flex;
-  margin-top: 50px;
-  background-color: black;
-  align-self: center;
-  justify-content: center;
-  align-items: center;
-  color: #1cff40;
-  font-size: 18px;
+
+  button {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    padding: 4px;
+    width: 70px;
+  }
 `;
 
 export const ProfileInformation = styled.div`
@@ -32,6 +37,7 @@ export const ProfileInformation = styled.div`
   width: 400px;
   height: 120px;
   background-color: #7b1346;
+  padding: 0px 15px;
 `;
 
 export const Photo = styled.div`
@@ -51,8 +57,24 @@ export const Photo = styled.div`
 
 export const PlayerInfo = styled.div`
   display: flex;
-  margin: 10px;
   flex-direction: column;
+  margin: 10px;
+  width: 100%;
   justify-content: space-around;
   font-size: 20px;
+`;
+
+export const Icon = styled.div`
+  display: flex;
+  img {
+    height: 30px;
+  }
+
+  b {
+    align-self: center;
+  }
+`;
+
+export const IconsResult = styled.div`
+  display: flex;
 `;

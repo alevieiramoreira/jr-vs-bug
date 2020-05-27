@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 
 import InputElement from '../../components/Input';
@@ -14,6 +14,7 @@ function SignUp(): ReactElement {
   const [nickName, setNickName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { addToast } = useToast();
+  const history = useHistory();
 
   async function register(event: React.FormEvent) {
     event.preventDefault();
@@ -38,6 +39,8 @@ function SignUp(): ReactElement {
           password,
         })
         .then((res) => console.log(res.data));
+
+      history.push('/login');
     } catch (error) {
       console.log(error);
     }

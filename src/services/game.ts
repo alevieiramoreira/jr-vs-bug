@@ -37,7 +37,7 @@ export const updateMove = (player: PlayerProps, idGame: number, cardName: string
         mana: 20,
         type: 'BUG',
         imgUrl: 'https://i.imgur.com/slkFCKv.png',
-        cards: [
+        hand: [
           {
             damage: 2,
             manaPoints: -4,
@@ -75,7 +75,7 @@ export const updateMove = (player: PlayerProps, idGame: number, cardName: string
         type: 'JUNIOR',
         nickname: 'mlkpiranha',
         imgUrl: 'https://i.imgur.com/P9DAD9G.png',
-        cards: [
+        hand: [
           {
             damage: 0,
             manaPoints: 4,
@@ -138,7 +138,7 @@ export function updateRound(decks?: Decks) {
         mana: 20,
         type: 'BUG',
         imgUrl: 'https://i.imgur.com/slkFCKv.png',
-        cards: [
+        hand: [
           {
             damage: 2,
             manaPoints: -4,
@@ -176,7 +176,7 @@ export function updateRound(decks?: Decks) {
         type: 'JUNIOR',
         nickname: 'mlkpiranha',
         imgUrl: 'https://i.imgur.com/P9DAD9G.png',
-        cards: [
+        hand: [
           {
             damage: 0,
             manaPoints: 4,

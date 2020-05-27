@@ -13,7 +13,7 @@ export interface PlayerProps {
   mana: number;
   type: 'JUNIOR' | 'BUG';
   imgUrl: string;
-  cards: CardProps[];
+  hand: CardProps[];
 }
 
 export interface CardProps {
@@ -37,7 +37,7 @@ export interface MovementData {
   text: string;
 }
 
-interface PlayerData {
+export interface PlayerData {
   id: number;
   nickName: string;
   wins: number;

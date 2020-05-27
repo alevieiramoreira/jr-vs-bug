@@ -36,10 +36,11 @@ function Game(): ReactElement {
 
       await api.get('game').then((response) => {
         setGame(response.data);
+        console.log(response.data);
 
         setDecks({
-          bugDeck: response.data.players[0].cards,
-          juniorDeck: response.data.players[1].cards,
+          bugDeck: response.data.players[0].hand,
+          juniorDeck: response.data.players[1].hand,
         });
       });
 
@@ -58,8 +59,8 @@ function Game(): ReactElement {
     setGame(updatedGame);
 
     setDecks({
-      bugDeck: updatedGame.players[0].cards,
-      juniorDeck: updatedGame.players[1].cards,
+      bugDeck: updatedGame.players[0].hand,
+      juniorDeck: updatedGame.players[1].hand,
     });
 
     setCardsOnTable([]);
@@ -98,7 +99,7 @@ function Game(): ReactElement {
 
   const handlePlayerSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-      const newSelectedCard = game.players[1].cards.find(
+      const newSelectedCard = game.players[1].hand.find(
         (card) => card.name === event.currentTarget.id,
       );
 
@@ -178,10 +179,11 @@ function Game(): ReactElement {
                 id={player.id}
                 key={player.id}
                 imgUrl={player.imgUrl}
-                cards={player.cards}
+                hand={player.hand}
                 mana={player.mana}
                 life={player.life}
                 type={player.type}
+                data-testid={`player-${player.type}`}
               />
             ))}
             <button
@@ -232,6 +234,7 @@ function Game(): ReactElement {
           </BoardWithDecks>
           {cardSelected && (
             <SelectedCard type={cardSelected.type}>
+              <span>{cardSelected.name}</span>
               <Card
                 {...cardSelected}
                 type={cardSelected.type}
@@ -240,6 +243,20 @@ function Game(): ReactElement {
                 onClick={handlePlayerSelect}
               />
               <span>{cardSelected.description}</span>
+              {cardSelected.type === 'JUNIOR' && (
+                <p>
+                  <em>
+                    custo/ganho de mana:
+                    <strong>{cardSelected.manaPoints}</strong>
+                  </em>
+
+                  <em>
+                    dano no bug:
+                    <strong>{cardSelected.damage}</strong>
+                  </em>
+                </p>
+              )}
+
               <button type="button" onClick={() => sendCurrentSelectedCard(cardSelected)}>
                 usar carta
               </button>
