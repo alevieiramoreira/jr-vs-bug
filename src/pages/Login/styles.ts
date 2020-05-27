@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   width: 100%;
 
   h1 {
@@ -10,7 +10,6 @@ export const Container = styled.div`
   }
 
   form {
-    margin-right: 100px;
     display: flex;
     justify-content: center;
     flex-direction: column;

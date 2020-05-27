@@ -76,10 +76,7 @@ function Game(): ReactElement {
 
       const newbugHand = filterUnusedCards(decks?.bugHand);
 
-      setDecks((previousCards) => ({
-        bugHand: newbugHand,
-        juniorHand: previousCards?.juniorHand,
-      }));
+      setDecks({ ...decks, bugHand: newbugHand });
 
       setCardSelected(randomCard);
       setCardsOnTable((previousCards) => [...previousCards, randomCard]);
