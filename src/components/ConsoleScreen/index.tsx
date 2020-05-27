@@ -18,5 +18,3 @@ const ConsoleScreen: React.FC = () => {
 };
 
 export default ConsoleScreen;
-
-// https://codepen.io/lachlanjc/pen/acwFm
