@@ -1,9 +1,17 @@
-import { CardProps } from '../@types/game';
+import { CardProps, Decks } from '../@types/game';
 
-export function filterUnusedCards(deck?: CardProps[]) {
-  return deck?.filter((card) => !card.isSelected);
+export function filterUnusedCards(decks: Decks, playerType: 'BUG' | 'JUNIOR') {
+  let filteredDeck;
+
+  if (playerType === 'BUG') {
+    filteredDeck = decks.bugHand.filter((card) => !card.isSelected);
+  } else {
+    filteredDeck = decks.bugHand.filter((card) => !card.isSelected);
+  }
+
+  return filteredDeck;
 }
 
-export function getRandomCard(deck?: CardProps[]) {
-  return deck?.[Math.floor(Math.random() * deck?.length)];
+export function getRandomCard(deck: CardProps[]): CardProps {
+  return deck[Math.floor(Math.random() * deck?.length)];
 }

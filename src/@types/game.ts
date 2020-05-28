@@ -21,15 +21,15 @@ export interface CardProps {
   damage: number;
   manaPoints: number;
   description: string;
-  type?: 'JUNIOR' | 'BUG';
+  type: 'JUNIOR' | 'BUG';
   juniorManaPoints?: number;
   imgUrl: string;
   isSelected?: boolean;
 }
 
 export interface Decks {
-  juniorHand?: CardProps[];
-  bugHand?: CardProps[];
+  juniorHand: CardProps[];
+  bugHand: CardProps[];
 }
 
 export interface MovementData {

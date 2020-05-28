@@ -3,7 +3,7 @@ import React from 'react';
 import { CardContainer } from './styles';
 import { CardProps } from '../../@types/game';
 
-export interface CardStyleProps extends Partial<CardProps> {
+export interface CardStyleProps extends CardProps {
   width: number;
   height: number;
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;

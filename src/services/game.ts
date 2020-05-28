@@ -11,11 +11,14 @@ export const getGameStart = async (): Promise<GameProps> => {
   }
 };
 
-export async function updateMove(player: PlayerProps, cardName: string): Promise<GameProps> {
+export async function updateMove(
+  playerType: 'BUG' | 'JUNIOR',
+  cardName: string,
+): Promise<GameProps> {
   try {
     const response = await api
       .post('move', {
-        playerType: player.type,
+        playerType,
         name: cardName,
       })
       .then((res) => res.data);
