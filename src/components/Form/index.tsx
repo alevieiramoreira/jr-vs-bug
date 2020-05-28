@@ -3,23 +3,40 @@ import { Link, useHistory } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { FormContainer, Button, Input } from './styles';
+
 import { useAuth } from '../../hooks/authentication';
 import { useToast } from '../../hooks/toast';
 
-interface SignIn {
+import api from '../../services/api';
+
+interface SignInData {
   nickName: string;
   password: string;
 }
 
 interface FormProps {
+  type: 'cadastro' | 'login';
   title?: string;
+  errorMsg: Error;
   buttonName: string;
   linkPathName: string;
   linkText: string;
 }
 
-const Form: React.FC<FormProps> = ({ title, buttonName, linkPathName, linkText }) => {
-  const [data, setData] = useState<SignIn>({} as SignIn);
+interface Error {
+  title: string;
+  description: string;
+}
+
+const Form: React.FC<FormProps> = ({
+  title,
+  buttonName,
+  linkPathName,
+  linkText,
+  errorMsg,
+  type,
+}) => {
+  const [data, setData] = useState<SignInData>({} as SignInData);
   const [errorMessage, setErrorMessage] = useState<string>();
   const history = useHistory();
   const { addToast } = useToast();
@@ -40,17 +57,31 @@ const Form: React.FC<FormProps> = ({ title, buttonName, linkPathName, linkText }
 
       try {
         const validationInput = Yup.object().shape({
-          nickName: Yup.string().required('Por favor preencha seu nickname'),
-          password: Yup.string().required('Por favor preencha sua senha'),
+          nickName: Yup.string().required(),
+          password: Yup.string().required(),
         });
 
         await validationInput.validate(data, { abortEarly: false });
 
-        await signIn(data);
+        if (type === 'cadastro') {
+          await api.post('user', data);
 
-        setTimeout(() => {
-          history.push('/profile');
-        }, 1000);
+          addToast({
+            type: 'success',
+            title: 'Cadastro realizado com sucesso',
+            description: 'Você já pode logar e jogar :D',
+          });
+
+          setTimeout(() => {
+            history.push('/login');
+          }, 1000);
+        } else {
+          await signIn(data);
+
+          setTimeout(() => {
+            history.push('/profile');
+          }, 1000);
+        }
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           error.errors.map((err) => setErrorMessage(err));
@@ -58,12 +89,12 @@ const Form: React.FC<FormProps> = ({ title, buttonName, linkPathName, linkText }
 
         addToast({
           type: 'error',
-          title: 'Erro na autenticação',
-          description: 'Ocorreu um erro ao fazer login, cheque suas credenciais.',
+          title: errorMsg.title,
+          description: errorMsg.description,
         });
       }
     },
-    [data, signIn, addToast, history],
+    [data, signIn, addToast, history, errorMsg, type],
   );
 
   return (

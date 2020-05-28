@@ -36,10 +36,3 @@ export interface MovementData {
   updateMovement: boolean;
   text: string;
 }
-
-export interface PlayerData {
-  id: number;
-  name: string;
-  wins: number;
-  losses: number;
-}

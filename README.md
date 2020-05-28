@@ -48,3 +48,4 @@ yarn start
 
 ✔ Após executar o comando, poderá visualizá-lo em http://localhost:3000 em seu navegador.
 
+Feito com ❤ por Alessandra Moreira

@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { Link } from 'react-router-dom';
 
 import { Container } from './styles';
 
@@ -10,10 +9,15 @@ function SignUp(): ReactElement {
   return (
     <Container>
       <Form
+        type="cadastro"
         title="Torne-se um player!"
-        buttonName="cadastrar"
+        buttonName="Cadastrar"
         linkPathName="/login"
         linkText="Já sou cadastrado"
+        errorMsg={{
+          title: 'Erro no cadastro',
+          description: 'Erro ao realizar o cadastro, tente novamente.',
+        }}
       />
       <div>
         <img src={computerImage} alt="imagem de computador escrito hello world na tela" />

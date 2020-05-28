@@ -2,7 +2,6 @@ import React, { ReactElement, useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import { Container, ProfileInformation, Photo, PlayerInfo, IconsResult, Icon } from './styles';
-import { PlayerData } from '../../@types/game';
 
 import devImg from '../../assets/images/player.png';
 import trophy from '../../assets/images/trophy.png';
@@ -13,6 +12,13 @@ import { useToast } from '../../hooks/toast';
 import { useAuth } from '../../hooks/authentication';
 
 import ConsoleScreen from '../../components/ConsoleScreen';
+
+interface PlayerData {
+  id: number;
+  name: string;
+  wins: number;
+  losses: number;
+}
 
 function Profile(): ReactElement {
   const [playerData, setPlayerData] = useState<PlayerData>();
