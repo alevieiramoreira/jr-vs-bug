@@ -117,6 +117,9 @@ export const SelectedCard = styled.div<DeckProps>`
 
   p {
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
 
     em {
       display: block;
@@ -126,26 +129,19 @@ export const SelectedCard = styled.div<DeckProps>`
         margin: 2px;
       }
     }
-  }
 
-  button {
-    width: 100px;
-    padding: 5px;
-    background-color: #fac60e;
-    margin-top: 5px;
+    button {
+      margin: 0 auto;
+      width: 100px;
+      padding: 5px;
+      background-color: #fac60e;
+      margin-top: 10px;
 
-    &:hover {
-      filter: brightness(80%);
+      &:hover {
+        filter: brightness(80%);
+      }
     }
   }
-
-  ${(props) =>
-    props.type === 'BUG' &&
-    css`
-      button {
-        display: none;
-      }
-    `}
 `;
 
 export const Bubble = styled.div<BubbleProps>`

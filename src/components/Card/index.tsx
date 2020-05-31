@@ -9,9 +9,9 @@ export interface CardStyleProps extends CardProps {
   onClick?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
-const Card: React.FC<CardStyleProps> = ({ imgUrl, onClick, name, ...rest }) => {
+const Card: React.FC<CardStyleProps> = ({ imgUrl, onClick, name, selected, ...rest }) => {
   return (
-    <CardContainer {...rest}>
+    <CardContainer selected={selected} {...rest}>
       <img src={imgUrl} alt={`carta: ${name}`} />
       <button id={name} type="button" onClick={onClick}>
         ver detalhes

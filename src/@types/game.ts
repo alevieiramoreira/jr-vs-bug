@@ -24,7 +24,7 @@ export interface CardProps {
   type: 'JUNIOR' | 'BUG';
   juniorManaPoints?: number;
   imgUrl: string;
-  isSelected?: boolean;
+  selected?: boolean;
 }
 
 export interface Decks {

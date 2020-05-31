@@ -4,7 +4,7 @@ interface ContainerProps {
   type?: 'JUNIOR' | 'BUG';
   width: number;
   height: number;
-  isSelected?: boolean;
+  selected?: boolean;
 }
 
 export const CardContainer = styled.div<ContainerProps>`

@@ -1,12 +1,15 @@
-import { PlayerProps, GameProps, Decks } from '../@types/game';
+import { GameProps, Decks } from '../@types/game';
 import api from './api';
 
-export const getGameStart = async (): Promise<GameProps> => {
+export const getGameStart = (): Promise<GameProps> => {
+  const token = localStorage.getItem('@JrVsBug:token');
+
   try {
-    const response = await api.get('game').then((res) => res.data);
+    const response = api.get('game', { headers: { token } }).then((res) => res.data);
 
     return response;
   } catch (error) {
+    console.log(error);
     throw new Error('Erro na requisição');
   }
 };
@@ -15,12 +18,17 @@ export async function updateMove(
   playerType: 'BUG' | 'JUNIOR',
   cardName: string,
 ): Promise<GameProps> {
+  const token = localStorage.getItem('@JrVsBug:token');
   try {
     const response = await api
-      .post('move', {
-        playerType,
-        name: cardName,
-      })
+      .post(
+        'move',
+        {
+          playerType,
+          name: cardName,
+        },
+        { headers: { token } },
+      )
       .then((res) => res.data);
 
     return response;
@@ -42,12 +50,17 @@ export async function updateSkipMove(idGame: number, playerId?: number): Promise
 }
 
 export async function updateRound(decks?: Decks): Promise<GameProps> {
+  const token = localStorage.getItem('@JrVsBug:token');
   try {
     const response = await api
-      .post('finishround', {
-        bugHand: decks?.bugHand,
-        juniorHand: decks?.juniorHand,
-      })
+      .post(
+        'finishround',
+        {
+          bugHand: decks?.bugHand,
+          juniorHand: decks?.juniorHand,
+        },
+        { headers: { token } },
+      )
       .then((res) => res.data);
 
     return response;

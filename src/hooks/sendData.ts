@@ -5,12 +5,16 @@ interface ReqData {
   data: object;
 }
 
-const usePostData = async ({ endpoint, data }: ReqData) => {
+const usePostData = ({ endpoint, data }: ReqData) => {
+  const token = localStorage.getItem('@JrVsBug:token');
+
   try {
-    const response = await api.post(endpoint, data).then((res) => res.data);
+    const response = api.post(endpoint, data, { headers: { token } }).then((res) => res.data);
 
     return response;
   } catch (error) {
-    throw new Error('Ocorreu algum erro inesperado, tente novamente.');
+    throw new Error('Ocorreu um erro na solicitação, recarregue a aplicação.');
   }
 };
+
+export default usePostData;

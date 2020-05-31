@@ -50,7 +50,7 @@ const PlayerStatus: React.FC<PlayerProps> = ({ imageUrl, life, mana, type }) => 
   }, [life, mana, previousLife, previousMana]);
 
   return (
-    <PlayerStatusContainer>
+    <PlayerStatusContainer playerType={type}>
       <img src={imageUrl} alt={`avatar do ${type}`} />
 
       <StatusBar ref={lifeBar} barType="life" life={life}>

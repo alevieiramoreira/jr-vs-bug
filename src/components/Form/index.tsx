@@ -8,6 +8,7 @@ import { useAuth } from '../../hooks/authentication';
 import { useToast } from '../../hooks/toast';
 
 import api from '../../services/api';
+import Loader from '../Loader';
 
 interface SignInData {
   nickName: string;
@@ -38,6 +39,8 @@ const Form: React.FC<FormProps> = ({
 }) => {
   const [data, setData] = useState<SignInData>({} as SignInData);
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(false);
+
   const history = useHistory();
   const { addToast } = useToast();
   const { signIn } = useAuth();
@@ -54,7 +57,7 @@ const Form: React.FC<FormProps> = ({
   const handleSubmit = useCallback(
     async (event: React.FormEvent) => {
       event.preventDefault();
-
+      setLoading(true);
       try {
         const validationInput = Yup.object().shape({
           nickName: Yup.string().required(),
@@ -65,7 +68,7 @@ const Form: React.FC<FormProps> = ({
 
         if (type === 'cadastro') {
           await api.post('user', data);
-
+          setLoading(false);
           addToast({
             type: 'success',
             title: 'Cadastro realizado com sucesso',
@@ -78,11 +81,15 @@ const Form: React.FC<FormProps> = ({
         } else {
           await signIn(data);
 
+          setLoading(false);
+
           setTimeout(() => {
             history.push('/profile');
           }, 1000);
         }
       } catch (error) {
+        setLoading(false);
+
         if (error instanceof Yup.ValidationError) {
           error.errors.map((err) => setErrorMessage(err));
         }
@@ -98,27 +105,30 @@ const Form: React.FC<FormProps> = ({
   );
 
   return (
-    <FormContainer onSubmit={handleSubmit} data-testid="form-submit">
-      {!!title && <h1>{title}</h1>}
-      <Input
-        type="text"
-        id="nickName"
-        data-testid="nickname-input"
-        placeholder="Nickname"
-        onChange={handleType}
-        error={errorMessage}
-      />
-      <Input
-        type="password"
-        id="password"
-        data-testid="password-input"
-        placeholder="Password"
-        onChange={handleType}
-        error={errorMessage}
-      />
-      <Button type="submit">{buttonName}</Button>
-      <Link to={linkPathName}>{linkText}</Link>
-    </FormContainer>
+    <>
+      {loading && <Loader />}
+      <FormContainer onSubmit={handleSubmit} data-testid="form-submit">
+        {!!title && <h1>{title}</h1>}
+        <Input
+          type="text"
+          id="nickName"
+          data-testid="nickname-input"
+          placeholder="Nickname"
+          onChange={handleType}
+          error={errorMessage}
+        />
+        <Input
+          type="password"
+          id="password"
+          data-testid="password-input"
+          placeholder="Password"
+          onChange={handleType}
+          error={errorMessage}
+        />
+        <Button type="submit">{buttonName}</Button>
+        <Link to={linkPathName}>{linkText}</Link>
+      </FormContainer>
+    </>
   );
 };
 

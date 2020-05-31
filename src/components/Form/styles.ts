@@ -32,16 +32,45 @@ export const FormContainer = styled.form`
 export const Button = styled.button`
   width: 350px;
   height: 50px;
-  background-color: #fac60e;
+  color: #fff;
+  background-color: #deb304;
   text-align: center;
+  position: relative;
   font-size: 25px;
+  box-shadow: inset -4px -4px 0px 0px #d48900;
+  /* border-top: 4px black solid;
+  border-bottom: 4px black solid; */
+
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+  }
+
+  &:before {
+    top: -4px;
+    left: 0;
+    border-top: 4px black solid;
+    border-bottom: 4px black solid;
+  }
+
+  &:after {
+    left: -4px;
+    top: 0;
+    border-left: 4px black solid;
+    border-right: 4px black solid;
+  }
 
   &:hover {
-    filter: brightness(80%);
+    background-color: #d48900;
+    box-shadow: inset -4px -4px 0px 0px #915e00;
   }
 
   &:active {
-    filter: brightness(100%);
+    background-color: #deb304;
   }
 `;
 

@@ -4,9 +4,9 @@ export function filterUnusedCards(decks: Decks, playerType: 'BUG' | 'JUNIOR') {
   let filteredDeck;
 
   if (playerType === 'BUG') {
-    filteredDeck = decks.bugHand.filter((card) => !card.isSelected);
+    filteredDeck = decks.bugHand.filter((card) => !card.selected);
   } else {
-    filteredDeck = decks.bugHand.filter((card) => !card.isSelected);
+    filteredDeck = decks.juniorHand.filter((card) => !card.selected);
   }
 
   return filteredDeck;
