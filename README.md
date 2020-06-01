@@ -48,6 +48,6 @@ yarn start
 
 ✔ Após executar o comando, poderá visualizá-lo em http://localhost:3000 em seu navegador.
 
-Crédito das artes utilizadas: https://valenberg.tumblr.com/
+🎨 Crédito das artes utilizadas: https://valenberg.tumblr.com/
 
 Feito com ❤ por **Alessandra Moreira**
