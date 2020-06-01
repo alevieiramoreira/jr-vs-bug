@@ -30,7 +30,7 @@ height="240px" width="450px">
 
 ### Pré-requisitos
 
-Para execução do projeto, é necessária a instalação do [Node](https://nodejs.org/en/) versão LTS em sua máquina.
+Para execução do projeto, é necessária a instalação do [Node](https://nodejs.org/en/) versão LTS e do [Yarn](https://yarnpkg.com/) em sua máquina.
 
 ### Instalação
 
