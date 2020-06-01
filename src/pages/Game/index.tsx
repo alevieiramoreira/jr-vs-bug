@@ -3,17 +3,16 @@ import UIfx from 'uifx';
 
 import Card from '../../components/Card';
 import PlayerStatus from '../../components/PlayerStatus';
-import AudioPlayer from '../../components/AudioPlayer';
 import GameResult from '../../components/GameResult';
+import Loader from '../../components/Loader';
 
 import { filterUnusedCards, getRandomCard } from '../../utils/gameActions';
-import usePostData from '../../hooks/sendData';
 
-import { updateMove, updateRound, updateSkipMove, getGameStart } from '../../services/game';
-
+import { getGameStart, sendData } from '../../services/game';
 import { Decks, CardProps, GameProps, MovementData } from '../../@types/game';
+
 import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players, Bubble } from './styles';
-import Loader from '../../components/Loader';
+import ErrorMsg from '../ErrorMsg';
 
 const beepMp3 = require('../../assets/music/beep.mp3');
 
@@ -23,6 +22,7 @@ function Game(): ReactElement {
   const [game, setGame] = useState<GameProps>({} as GameProps);
   const [decks, setDecks] = useState<Decks>({} as Decks);
   const [loading, setLoading] = useState<boolean>(true);
+  const [errors, setErrors] = useState<boolean>(false);
   const [waitRound, setwaitRound] = useState<boolean>(false);
   const [cardSelected, setCardSelected] = useState<CardProps | null>();
   const [cardsOnTable, setCardsOnTable] = useState<CardProps[]>([]);
@@ -30,14 +30,16 @@ function Game(): ReactElement {
 
   useEffect(() => {
     async function startGame() {
-      await getGameStart().then((response) => {
-        setGame(response);
+      await getGameStart()
+        .then((response) => {
+          setGame(response);
 
-        setDecks({
-          bugHand: response.players[0].hand,
-          juniorHand: response.players[1].hand,
-        });
-      });
+          setDecks({
+            bugHand: response.players[0].hand,
+            juniorHand: response.players[1].hand,
+          });
+        })
+        .catch(() => setErrors(true));
       setLoading(false);
     }
     startGame();
@@ -49,16 +51,21 @@ function Game(): ReactElement {
       bugHand: filterUnusedCards(decks, 'BUG'),
     };
 
-    await updateRound(updatedDecks).then((response) => {
-      setwaitRound(false);
+    await sendData('finishround', {
+      bugHand: updatedDecks.bugHand,
+      juniorHand: updatedDecks.juniorHand,
+    })
+      .then((response) => {
+        setwaitRound(false);
 
-      setGame(response);
+        setGame(response);
 
-      setDecks({
-        bugHand: response.players[0].hand,
-        juniorHand: response.players[1].hand,
-      });
-    });
+        setDecks({
+          bugHand: response.players[0].hand,
+          juniorHand: response.players[1].hand,
+        });
+      })
+      .catch(() => setErrors(true));
 
     setCardsOnTable([]);
     setCardSelected(null);
@@ -80,9 +87,11 @@ function Game(): ReactElement {
       setCardSelected(newCardSelected);
       setCardsOnTable((previousCards) => [...previousCards, newCardSelected]);
 
-      await updateMove(playerType, newCardSelected.name).then((response) => {
-        setGame(response);
-      });
+      await sendData('move', { playerType, name: newCardSelected.name })
+        .then((response) => {
+          setGame(response);
+        })
+        .catch(() => setErrors(true));
 
       setTimeout(() => {
         setwaitRound(true);
@@ -133,9 +142,11 @@ function Game(): ReactElement {
     async (playerId?: number) => {
       beep.play();
 
-      await updateSkipMove(game.id, playerId).then((response) => {
-        setGame(response);
-      });
+      await sendData('skipround', { playerId, idGame: game.id })
+        .then((response) => {
+          setGame(response);
+        })
+        .catch(() => setErrors(true));
 
       setTimeout(() => {
         handleMove('BUG');
@@ -146,8 +157,9 @@ function Game(): ReactElement {
 
   return (
     <>
+      {errors && <ErrorMsg />}
       {loading && <Loader />}
-      {!loading && (
+      {!loading && !errors && (
         <Container>
           {movement?.updateMovement && <Bubble moveNumber={game.move}>{movement.text}</Bubble>}
 

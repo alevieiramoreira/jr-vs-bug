@@ -18,6 +18,30 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
     border: none;
+    position: relative;
+
+    &:before,
+    &:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      box-sizing: content-box;
+    }
+
+    &:before {
+      top: -4px;
+      left: 0;
+      border-top: 4px black solid;
+      border-bottom: 4px black solid;
+    }
+
+    &:after {
+      left: -4px;
+      top: 0;
+      border-left: 4px black solid;
+      border-right: 4px black solid;
+    }
   }
 
   body, input, button {

@@ -38,8 +38,6 @@ export const Button = styled.button`
   position: relative;
   font-size: 25px;
   box-shadow: inset -4px -4px 0px 0px #d48900;
-  /* border-top: 4px black solid;
-  border-bottom: 4px black solid; */
 
   &:before,
   &:after {
