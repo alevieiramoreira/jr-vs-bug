@@ -5,7 +5,7 @@ import manaImg from '../../assets/images/mana.png';
 
 import { PlayerStatusContainer, StatusBar } from './styles';
 import { PlayerProps } from '../../@types/game';
-import { usePreviousValue } from '../../hooks/values';
+import { usePreviousValue } from '../../hooks/previousValues';
 
 const PlayerStatus: React.FC<PlayerProps> = ({ imageUrl, life, mana, type }) => {
   const lifeBar = useRef<HTMLDivElement>(null);
@@ -47,10 +47,10 @@ const PlayerStatus: React.FC<PlayerProps> = ({ imageUrl, life, mana, type }) => 
         );
       }
     }
-  }, [life, mana]);
+  }, [life, mana, previousLife, previousMana]);
 
   return (
-    <PlayerStatusContainer>
+    <PlayerStatusContainer playerType={type}>
       <img src={imageUrl} alt={`avatar do ${type}`} />
 
       <StatusBar ref={lifeBar} barType="life" life={life}>

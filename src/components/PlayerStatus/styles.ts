@@ -4,7 +4,10 @@ interface StatusBarProps {
   barType: 'life' | 'mana';
   life?: number;
   mana?: number;
-  damaged?: boolean;
+}
+
+interface PlayerStatusProps {
+  playerType: 'JUNIOR' | 'BUG';
 }
 
 const changeLifeColors = (lifePoints: number) => {
@@ -17,12 +20,19 @@ const changeLifeColors = (lifePoints: number) => {
   return '#d60f0f';
 };
 
-export const PlayerStatusContainer = styled.section`
+export const PlayerStatusContainer = styled.section<PlayerStatusProps>`
   margin-top: 35px;
   img {
     width: 100px;
     border-radius: 100%;
-    border: 3px solid #cb0c59;
+    ${(props) =>
+      props.playerType === 'BUG'
+        ? css`
+            border: 3px solid #cb0c59;
+          `
+        : css`
+            border: 3px solid #2dd5ed;
+          `}
 
     &:active {
       filter: grayscale(100%);

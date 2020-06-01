@@ -58,6 +58,11 @@ export const Container = styled(animated.div)<ContainerProps>`
     border: 0;
     background: transparent;
     color: inherit; /* pega a cor do elemento pai*/
+
+    &:before,
+    &:after {
+      border: none;
+    }
   }
 
   ${(props) =>

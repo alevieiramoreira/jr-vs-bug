@@ -3,16 +3,16 @@ import UIfx from 'uifx';
 
 import Card from '../../components/Card';
 import PlayerStatus from '../../components/PlayerStatus';
-import AudioPlayer from '../../components/AudioPlayer';
 import GameResult from '../../components/GameResult';
+import Loader from '../../components/Loader';
 
-import api from '../../services/api';
 import { filterUnusedCards, getRandomCard } from '../../utils/gameActions';
 
-import { updateMove, updateRound, updateSkipMove } from '../../services/game';
-
+import { getGameStart, sendData } from '../../services/game';
 import { Decks, CardProps, GameProps, MovementData } from '../../@types/game';
+
 import { Container, Deck, BoardWithDecks, Table, SelectedCard, Players, Bubble } from './styles';
+import ErrorMsg from '../ErrorMsg';
 
 const beepMp3 = require('../../assets/music/beep.mp3');
 
@@ -20,85 +20,106 @@ const beep = new UIfx(beepMp3);
 
 function Game(): ReactElement {
   const [game, setGame] = useState<GameProps>({} as GameProps);
-  const [decks, setDecks] = useState<Decks>();
+  const [decks, setDecks] = useState<Decks>({} as Decks);
   const [loading, setLoading] = useState<boolean>(true);
+  const [errors, setErrors] = useState<boolean>(false);
   const [waitRound, setwaitRound] = useState<boolean>(false);
   const [cardSelected, setCardSelected] = useState<CardProps | null>();
   const [cardsOnTable, setCardsOnTable] = useState<CardProps[]>([]);
-  const [movement, setMovement] = useState<MovementData>({
-    updateMovement: true,
-    text: 'SUA VEZ DE JOGAR!',
-  });
+  const [movement, setMovement] = useState<MovementData>();
 
   useEffect(() => {
-    async function getGameStart() {
-      setLoading(true);
+    async function startGame() {
+      await getGameStart()
+        .then((response) => {
+          setGame(response);
 
-      await api.get('game').then((response) => {
-        setGame(response.data);
-
-        setDecks({
-          bugHand: response.data.players[0].hand,
-          juniorHand: response.data.players[1].hand,
-        });
-      });
-
+          setDecks({
+            bugHand: response.players[0].hand,
+            juniorHand: response.players[1].hand,
+          });
+        })
+        .catch(() => setErrors(true));
       setLoading(false);
     }
-    getGameStart();
+    startGame();
   }, []);
 
   const handlefinishRound = useCallback(async () => {
     const updatedDecks = {
-      bugHand: filterUnusedCards(decks?.bugHand),
-      juniorHand: filterUnusedCards(decks?.juniorHand),
+      juniorHand: filterUnusedCards(decks, 'JUNIOR'),
+      bugHand: filterUnusedCards(decks, 'BUG'),
     };
 
-    await updateRound(updatedDecks).then((response) => {
-      setwaitRound(false);
+    await sendData('finishround', {
+      bugHand: updatedDecks.bugHand,
+      juniorHand: updatedDecks.juniorHand,
+    })
+      .then((response) => {
+        setwaitRound(false);
 
-      setGame(response);
+        setGame(response);
 
-      setDecks({
-        bugHand: response.players[0].hand,
-        juniorHand: response.players[1].hand,
-      });
-    });
+        setDecks({
+          bugHand: response.players[0].hand,
+          juniorHand: response.players[1].hand,
+        });
+      })
+      .catch(() => setErrors(true));
 
     setCardsOnTable([]);
     setCardSelected(null);
-    setMovement({ updateMovement: true, text: 'SUA VEZ DE JOGAR!' });
   }, [decks]);
 
-  const handleBugTurn = useCallback(async () => {
-    const randomCard = getRandomCard(decks?.bugHand);
+  const handleMove = useCallback(
+    async (playerType: 'BUG' | 'JUNIOR', selectedCard?: CardProps) => {
+      let newCardSelected = {} as CardProps;
 
-    if (randomCard) {
-      randomCard.isSelected = true;
-      randomCard.type = 'BUG';
+      if (selectedCard) {
+        newCardSelected = selectedCard;
+      } else {
+        newCardSelected = getRandomCard(decks.bugHand);
+        newCardSelected.type = playerType;
+      }
 
-      const newbugHand = filterUnusedCards(decks?.bugHand);
+      newCardSelected.selected = true;
 
-      setDecks({ ...decks, bugHand: newbugHand });
+      setCardSelected(newCardSelected);
+      setCardsOnTable((previousCards) => [...previousCards, newCardSelected]);
 
-      await updateMove(game?.players?.[0], randomCard.name).then((response) => {
-        setGame(response);
-      });
-
-      setCardSelected(randomCard);
-      setCardsOnTable((previousCards) => [...previousCards, randomCard]);
-
-      setMovement({ updateMovement: false, text: '' });
+      await sendData('move', { playerType, name: newCardSelected.name })
+        .then((response) => {
+          setGame(response);
+        })
+        .catch(() => setErrors(true));
 
       setTimeout(() => {
         setwaitRound(true);
       }, 3000);
 
-      setTimeout(() => {
-        handlefinishRound();
-      }, 7000);
+      if (playerType === 'BUG') {
+        setTimeout(() => {
+          handlefinishRound();
+        }, 7000);
+      }
+    },
+    [handlefinishRound, decks],
+  );
+
+  useEffect(() => {
+    if (game.status === 'FINISHED') {
+      return;
     }
-  }, [decks, handlefinishRound, game]);
+    if (game.move % 2 === 0) {
+      setMovement({ updateMovement: true, text: 'VEZ DO BUG' });
+
+      setTimeout(() => {
+        handleMove('BUG');
+      }, 3000);
+    } else {
+      setMovement({ updateMovement: true, text: 'SUA VEZ DE JOGAR' });
+    }
+  }, [game.move, game.status, handleMove]);
 
   const handlePlayerSelect = useCallback(
     (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
@@ -117,75 +138,47 @@ function Game(): ReactElement {
     [game],
   );
 
-  const sendCurrentSelectedCard = useCallback(
-    async (newCardSelected: CardProps) => {
-      newCardSelected.isSelected = true;
-      newCardSelected.type = 'JUNIOR';
-
-      setCardsOnTable([...cardsOnTable, newCardSelected]);
-      setCardSelected(null);
-
-      const newjuniorHand = filterUnusedCards(decks?.juniorHand);
-
-      setDecks({ ...decks, juniorHand: newjuniorHand });
-
-      await updateMove(game?.players?.[1], newCardSelected.name).then((response) => {
-        console.log('response move do jr', response);
-        setGame(response);
-      });
-
-      setMovement({ updateMovement: true, text: 'VEZ DO BUG!' });
-
-      beep.play();
-
-      setTimeout(() => {
-        handleBugTurn();
-      }, 5000);
-    },
-    [cardsOnTable, handleBugTurn, decks, game],
-  );
-
   const handleSkipMove = useCallback(
     async (playerId?: number) => {
       beep.play();
 
-      setMovement({ updateMovement: true, text: 'VOCÊ PASSOU' });
-
-      await updateSkipMove(game.id, playerId).then((response) => {
-        setGame(response);
-
-        setMovement({ updateMovement: true, text: 'VEZ DO BUG' });
-      });
+      await sendData('skipround', { playerId, idGame: game.id })
+        .then((response) => {
+          setGame(response);
+        })
+        .catch(() => setErrors(true));
 
       setTimeout(() => {
-        handleBugTurn();
-        setMovement({ updateMovement: false, text: '' });
+        handleMove('BUG');
       }, 5000);
     },
-    [game.id, handleBugTurn],
+    [game.id, handleMove],
   );
 
   return (
     <>
-      {!loading && (
+      {errors && <ErrorMsg />}
+      {loading && <Loader />}
+      {!loading && !errors && (
         <Container>
-          {movement.updateMovement && <Bubble moveNumber={game.move}>{movement.text}</Bubble>}
+          {movement?.updateMovement && <Bubble moveNumber={game.move}>{movement.text}</Bubble>}
 
           {game.status === 'FINISHED' && <GameResult winner={game.winner} />}
 
           <Players>
-            {game.players.map((player) => (
-              <PlayerStatus
-                id={player.id}
-                key={player.id}
-                imageUrl={player.imageUrl}
-                hand={player.hand}
-                mana={player.mana}
-                life={player.life}
-                type={player.type}
-                data-testid={`player-${player.type}`}
-              />
-            ))}
+            {game &&
+              game.players.map((player) => (
+                <PlayerStatus
+                  id={player.id}
+                  key={player.id}
+                  imageUrl={player.imageUrl}
+                  hand={player.hand}
+                  mana={player.mana}
+                  life={player.life}
+                  type={player.type}
+                  data-testid={`player-${player.type}`}
+                />
+              ))}
             <button
               type="button"
               onClick={() => {
@@ -197,11 +190,12 @@ function Game(): ReactElement {
           </Players>
           <BoardWithDecks>
             <Deck type={game.players[0].type}>
-              {decks?.bugHand?.map((card) => (
+              {decks.bugHand.map((card: CardProps) => (
                 <Card
                   key={card.name}
                   description={card.description}
                   manaPoints={card.manaPoints}
+                  damage={card.damage}
                   name={card.name}
                   imgUrl={card.imgUrl}
                   type={game.players[0].type}
@@ -212,17 +206,18 @@ function Game(): ReactElement {
             </Deck>
             <Table>
               {cardsOnTable.map((card) => (
-                <Card {...card} type={card.type} width={90} height={110} />
+                <Card {...card} width={90} height={110} />
               ))}
               {waitRound && <span>Atualizando rodada! Embaralhando cartas...</span>}
             </Table>
             <Deck type={game.players[1].type}>
-              {decks?.juniorHand?.map((card) => (
+              {decks.juniorHand.map((card: CardProps) => (
                 <Card
                   key={card.name}
                   description={card.description}
                   manaPoints={card.manaPoints}
                   name={card.name}
+                  damage={card.damage}
                   imgUrl={card.imgUrl}
                   type={game.players[1].type}
                   width={120}
@@ -233,15 +228,9 @@ function Game(): ReactElement {
             </Deck>
           </BoardWithDecks>
           {cardSelected && (
-            <SelectedCard type={cardSelected.type}>
+            <SelectedCard>
               <span>{cardSelected.name}</span>
-              <Card
-                {...cardSelected}
-                type={cardSelected.type}
-                width={130}
-                height={170}
-                onClick={handlePlayerSelect}
-              />
+              <Card {...cardSelected} width={130} height={170} onClick={handlePlayerSelect} />
               <span>{cardSelected.description}</span>
               {cardSelected.type === 'JUNIOR' && (
                 <p>
@@ -249,17 +238,15 @@ function Game(): ReactElement {
                     custo/ganho de mana:
                     <strong>{cardSelected.manaPoints}</strong>
                   </em>
-
                   <em>
                     dano no bug:
                     <strong>{cardSelected.damage}</strong>
                   </em>
+                  <button type="button" onClick={() => handleMove(cardSelected.type, cardSelected)}>
+                    usar carta
+                  </button>
                 </p>
               )}
-
-              <button type="button" onClick={() => sendCurrentSelectedCard(cardSelected)}>
-                usar carta
-              </button>
             </SelectedCard>
           )}
         </Container>

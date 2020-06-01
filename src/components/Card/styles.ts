@@ -4,7 +4,7 @@ interface ContainerProps {
   type?: 'JUNIOR' | 'BUG';
   width: number;
   height: number;
-  isSelected?: boolean;
+  selected?: boolean;
 }
 
 export const CardContainer = styled.div<ContainerProps>`
@@ -41,7 +41,8 @@ export const CardContainer = styled.div<ContainerProps>`
     visibility: hidden;
     position: absolute;
     padding: 8px 3px;
-    background-color: #fac60e;
+    background-color: #deb304;
+    box-shadow: inset -4px -4px 0px 0px #d48900;
   }
 
   :hover {

@@ -23,8 +23,9 @@ export const Players = styled.div`
   button {
     position: absolute;
     bottom: 50px;
-    background-color: #fac60e;
+    background-color: #deb304;
     padding: 10px;
+    box-shadow: inset -4px -4px 0px 0px #d48900;
 
     &:hover {
       filter: brightness(80%);
@@ -117,6 +118,9 @@ export const SelectedCard = styled.div<DeckProps>`
 
   p {
     margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
 
     em {
       display: block;
@@ -126,38 +130,32 @@ export const SelectedCard = styled.div<DeckProps>`
         margin: 2px;
       }
     }
-  }
 
-  button {
-    width: 100px;
-    padding: 5px;
-    background-color: #fac60e;
-    margin-top: 5px;
+    button {
+      margin: 0 auto;
+      width: 100px;
+      padding: 5px;
+      margin-top: 10px;
+      background-color: #deb304;
+      box-shadow: inset -4px -4px 0px 0px #d48900;
 
-    &:hover {
-      filter: brightness(80%);
+      &:hover {
+        filter: brightness(80%);
+      }
     }
   }
-
-  ${(props) =>
-    props.type === 'BUG' &&
-    css`
-      button {
-        display: none;
-      }
-    `}
 `;
 
 export const Bubble = styled.div<BubbleProps>`
   position: absolute;
   background: #004080;
-  border-radius: 0.4em;
   height: 40px;
   width: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 15px;
+  box-shadow: inset -4px -4px 0px 0px #00284f;
 
   ${(props) =>
     props.moveNumber % 2 === 0

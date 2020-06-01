@@ -21,25 +21,18 @@ export interface CardProps {
   damage: number;
   manaPoints: number;
   description: string;
-  type?: 'JUNIOR' | 'BUG';
+  type: 'JUNIOR' | 'BUG';
   juniorManaPoints?: number;
   imgUrl: string;
-  isSelected?: boolean;
+  selected?: boolean;
 }
 
 export interface Decks {
-  juniorHand?: CardProps[];
-  bugHand?: CardProps[];
+  juniorHand: CardProps[];
+  bugHand: CardProps[];
 }
 
 export interface MovementData {
   updateMovement: boolean;
   text: string;
-}
-
-export interface PlayerData {
-  id: number;
-  name: string;
-  wins: number;
-  losses: number;
 }

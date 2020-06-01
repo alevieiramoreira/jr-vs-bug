@@ -30,7 +30,7 @@ height="240px" width="450px">
 
 ### Pré-requisitos
 
-Para execução do projeto, é necessária a instalação do [Node](https://nodejs.org/en/) versão LTS em sua máquina.
+Para execução do projeto, é necessária a instalação do [Node](https://nodejs.org/en/) versão LTS e do [Yarn](https://yarnpkg.com/) em sua máquina.
 
 ### Instalação
 
@@ -48,3 +48,6 @@ yarn start
 
 ✔ Após executar o comando, poderá visualizá-lo em http://localhost:3000 em seu navegador.
 
+Crédito das artes utilizadas: https://valenberg.tumblr.com/
+
+Feito com ❤ por **Alessandra Moreira**
