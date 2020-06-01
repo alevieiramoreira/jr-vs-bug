@@ -69,6 +69,11 @@ export const Header = styled.header`
     background-color: #911114;
     box-shadow: inset -2px -2px 0px 0px #6e0306;
 
+    &:hover {
+      background-color: #6e0306;
+      box-shadow: inset -4px -4px 0px 0px #570002;
+    }
+
     img {
       width: 15px;
       margin-right: 15px;
