@@ -50,4 +50,4 @@ yarn start
 
 🎨 Crédito das artes utilizadas: https://valenberg.tumblr.com/
 
-Feito com ❤ por **Alessandra Moreira**
+Feito com ❤ por **Alessandra Moreira, Luiz Cardoso e Ude Costa**
